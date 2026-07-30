@@ -14,35 +14,109 @@
      STAIN  (eosin / hematoxylin)  -> anatomy only
      SIGNAL (CGM range colours)    -> glucose state only
    ============================================================ */
+/* ============================================================
+   THEME
+   Two grounds, one instrument.
+
+   The chrome — page, panels, rules, body copy — follows the reader's
+   light or dark preference. The instrument surfaces do NOT: the
+   microscope field, the eyepiece and the sensor trace stay on a dark
+   ground in both themes. That is not a shortcut. A microscope field is
+   dark, and the stain and signal hues were chosen to sit on darkness;
+   inverting the ground under them would wreck the one thing the colour
+   system has to guarantee, which is that a low never gets confused with
+   a high. So every particle, cell and trace colour is defined once and
+   is legible by construction, in either theme.
+
+   Signal hues also appear as TEXT in the chrome (a green in-range
+   figure, an amber warning). Those need a darker ink on paper, so each
+   has an --ink- variant that does flip.
+   ============================================================ */
+
+/* ---- light chrome. Instrument tokens are deliberately NOT overridden ---- */
+:root[data-theme="light"]{
+  color-scheme:light;
+  /* Paper is a pale lilac-grey — a haematoxylin wash, not the usual cream. */
+  --ground:#F4F3F8;
+  --panel:#FFFFFF;
+  --panel-2:#EDEBF4;
+  --raise:#E2DFEC;
+  --line:#DCD9E6;
+  --line-2:#BEB9CE;
+  --text:#171922;
+  --text-2:#4B5261;
+  --text-3:#5E6675;
+  --eosin-dim:rgba(193,58,103,.09);
+  --tissue:rgba(193,58,103,.06);
+  --eosin-2:#C13A67;
+  --hema-2:#5546C4;
+  /* darker inks so signal colour survives on paper */
+  --ink-range:#0B7F55; --ink-high:#8A5800; --ink-vhigh:#C2401D;
+  --ink-low:#2360C4;   --ink-vlow:#C0212F;
+  --ink-eosin:#C13A67; --ink-hema:#5546C4;
+  --shadow:0 14px 34px rgba(31,26,20,.14);
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]):not([data-theme="light"]){
+    color-scheme:light;
+    --ground:#F4F3F8; --panel:#FFFFFF; --panel-2:#EDEBF4; --raise:#E2DFEC;
+    --line:#DCD9E6; --line-2:#BEB9CE;
+    --text:#171922; --text-2:#4B5261; --text-3:#5E6675;
+    --eosin-dim:rgba(193,58,103,.09); --tissue:rgba(193,58,103,.06);
+    --eosin-2:#C13A67; --hema-2:#5546C4;
+    --ink-range:#0B7F55; --ink-high:#8A5800; --ink-vhigh:#C2401D;
+    --ink-low:#2360C4;   --ink-vlow:#C0212F;
+    --ink-eosin:#C13A67; --ink-hema:#5546C4;
+    --shadow:0 14px 34px rgba(31,26,20,.14);
+  }
+}
+/* instrument surfaces keep their own dark ground in every theme */
+.stage,.chartwrap,.eyepiece,.diag canvas,#isletBig,.compare canvas{
+  background-color:#0A0C11 !important;
+  border-color:rgba(154,164,178,.20)
+}
+.diag canvas{background-image:radial-gradient(115% 85% at 50% 8%,rgba(123,107,245,.10),transparent 72%)}
 :root{
-  --ground:#0B1014;
-  --field:#0E151B;
-  --panel:#131C24;
-  --panel-2:#18232C;
-  --raise:#1E2B36;
-  --line:#25333F;
-  --line-2:#324351;
+  color-scheme:dark;
+  /* Ground is a near-neutral black rather than the navy it was. Navy
+     desaturates everything laid on top of it; a neutral ground lets the
+     stain channels actually read as channels. */
+  --ground:#07080C;
+  --field:#0A0C11;
+  --panel:#111319;
+  --panel-2:#171A22;
+  --raise:#1E222C;
+  --line:#232833;
+  --line-2:#333A48;
 
-  --text:#E8EFF4;
-  --text-2:#93A6B4;
-  --text-3:#5F7382;
+  --text:#EEF1F5;
+  --text-2:#9AA4B2;
+  --text-3:#7C8794;   /* AA at caption sizes on the dark panel */
 
-  /* STAIN — histology */
-  --eosin:#F08AA0;
-  --eosin-2:#C25E75;
-  --eosin-dim:rgba(240,138,160,.13);
-  --hema:#9186EC;
-  --hema-2:#6357C0;
-  --delta:#4FC3C7;
-  --tissue:rgba(240,138,160,.09);
+  /* STAIN — the islet's own channels, borrowed from immunofluorescence:
+     insulin magenta, nuclear indigo, a cyan third channel. */
+  --eosin:#FF5C93;
+  --eosin-2:#C93E6E;
+  --eosin-dim:rgba(255,92,147,.13);
+  --hema:#7B6BF5;
+  --hema-2:#5B49D6;
+  --delta:#35D6D0;
+  --tissue:rgba(255,92,147,.08);
 
-  /* SIGNAL — CGM */
-  --range:#37D399;
-  --high:#F2A63B;
-  --vhigh:#E2603C;
-  --low:#6EA8FE;
-  --vlow:#E5484D;
-  --range-band:rgba(55,211,153,.10);
+  /* SIGNAL — CGM. Never mixed with the stain channels. */
+  --range:#2AD68F;
+  --high:#FFAE1F;
+  --vhigh:#FF6A45;
+  --low:#4B9DFF;
+  --vlow:#FF4757;
+  --range-band:rgba(42,214,143,.10);
+
+  /* ink variants: same meaning, legible as type on this ground */
+  --ink-range:#2AD68F; --ink-high:#FFAE1F; --ink-vhigh:#FF8461;
+  --ink-low:#4B9DFF;   --ink-vlow:#FF6B78;
+  --ink-eosin:#FF7CA8; --ink-hema:#9C8FFF;
+  --shadow:0 18px 44px rgba(0,0,0,.5);
+  --field-line:rgba(147,161,172,.16);
 
   --r-sm:6px; --r-md:10px; --r-lg:16px;
   --mono:"IBM Plex Mono",ui-monospace,monospace;
@@ -108,10 +182,15 @@ p{margin:0 0 .7em}
 .data-panel{grid-area:data}
 .ctrl-panel{grid-area:ctrl}
 
+[hidden]{display:none!important}
+
 .card{
   background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
   position:relative;overflow:hidden;
 }
+/* Bricolage has tall ascenders; a 1.2 line box crops them inside a clipped
+   card. Give the display face room to breathe instead of clipping it. */
+.diag,.myth{overflow:visible}
 .card-head{
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
   padding:11px 14px;border-bottom:1px solid var(--line);
@@ -125,7 +204,7 @@ p{margin:0 0 .7em}
 .stage{
   position:relative;width:100%;aspect-ratio:400/780;min-height:420px;
   background:
-    radial-gradient(ellipse 62% 52% at 50% 42%, rgba(240,138,160,.055), transparent 70%),
+    radial-gradient(ellipse 62% 52% at 50% 42%, rgba(255,92,147,.055), transparent 70%),
     radial-gradient(ellipse 90% 70% at 50% 50%, #10181F 0%, #0A0F14 78%);
 }
 .stage::before{ /* graticule */
@@ -146,8 +225,8 @@ p{margin:0 0 .7em}
 #fx{z-index:2}
 
 /* body svg styling */
-.silhouette{fill:var(--tissue);stroke:rgba(240,138,160,.30);stroke-width:1.2}
-.limb{fill:none;stroke:rgba(240,138,160,.30);stroke-linecap:round;stroke-linejoin:round}
+.silhouette{fill:var(--tissue);stroke:rgba(255,92,147,.30);stroke-width:1.2}
+.limb{fill:none;stroke:rgba(255,92,147,.30);stroke-linecap:round;stroke-linejoin:round}
 .limb-fill{fill:none;stroke:var(--tissue);stroke-linecap:round;stroke-linejoin:round}
 
 .sys{transition:opacity .25s}
@@ -159,8 +238,8 @@ p{margin:0 0 .7em}
 @keyframes flash{0%,100%{filter:none}45%{filter:brightness(1.9) drop-shadow(0 0 14px currentColor)}}
 .organ.lit{filter:brightness(1.5) drop-shadow(0 0 10px currentColor)}
 
-.o-endo{color:var(--eosin)}
-.o-immune{color:var(--hema)}
+.o-endo{color:var(--ink-eosin)}
+.o-immune{color:var(--ink-hema)}
 .o-metab{color:#E8B36A}
 .o-cardio{color:#EF6E7B}
 .o-renal{color:#5BC8D6}
@@ -208,7 +287,7 @@ p{margin:0 0 .7em}
 .chip[aria-pressed="true"]{color:var(--text);background:var(--raise);border-color:var(--line-2)}
 .chip[aria-pressed="false"] .dot{opacity:.28}
 .chip[aria-pressed="false"]{text-decoration:line-through;text-decoration-color:var(--text-3)}
-.chip.c-endo[aria-pressed="true"] .dot{background:var(--eosin);color:var(--eosin)}
+.chip.c-endo[aria-pressed="true"] .dot{background:var(--eosin);color:var(--ink-eosin)}
 .chip.c-immune[aria-pressed="true"] .dot{background:var(--hema)}
 .chip.c-metab[aria-pressed="true"] .dot{background:#E8B36A}
 .chip.c-cardio[aria-pressed="true"] .dot{background:#EF6E7B}
@@ -303,7 +382,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 /* ---------- bottom rail ---------- */
 .rail{
   position:fixed;left:0;right:0;bottom:0;z-index:30;
-  background:rgba(11,16,20,.93);backdrop-filter:blur(14px);
+  background:color-mix(in srgb,var(--panel) 88%,transparent);backdrop-filter:blur(16px);
   border-top:1px solid var(--line);padding:9px 16px;
   display:flex;gap:8px;align-items:center;overflow-x:auto;
 }
@@ -344,7 +423,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 .researcher .plain-only{display:none}
 
 .callout{
-  border-left:2px solid var(--eosin);background:rgba(240,138,160,.07);
+  border-left:2px solid var(--eosin);background:rgba(255,92,147,.07);
   padding:11px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin:14px 0;font-size:13.5px;
 }
 .callout.warn{border-left-color:var(--vhigh);background:rgba(226,96,60,.09)}
@@ -363,7 +442,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 }
 .stepdot:hover{border-color:var(--text-3);color:var(--text-2)}
 .stepdot[aria-current="true"]{background:var(--eosin);border-color:var(--eosin);color:#2A0D14;font-weight:600}
-.stepdot.done{border-color:var(--eosin-2);color:var(--eosin)}
+.stepdot.done{border-color:var(--eosin-2);color:var(--ink-eosin)}
 
 /* islet big */
 .islet-big{width:100%;aspect-ratio:1/1;border-radius:50%;background:#070B0E;border:1px solid var(--line-2);display:block;box-shadow:0 0 0 6px rgba(11,16,20,.9),0 0 50px rgba(145,134,236,.12)}
@@ -378,11 +457,115 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 .compare canvas{width:100%;aspect-ratio:1/1;display:block;border-radius:50%;background:#070B0E;margin-bottom:10px}
 
 /* mechanism map */
+/* organic motion: scale about each element's own centre */
+#heartShape,#figure,#vesselGroup{transform-box:fill-box;transform-origin:center;will-change:transform,opacity}
+@media (prefers-reduced-motion:reduce){#heartShape,#figure,#vesselGroup{transform:none!important}}
+
+/* ============ tabs ============ */
+.tb-label{font:600 9.5px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--text-3)}
+.tabbar{display:flex;gap:6px;margin:0 0 16px;border-bottom:1px solid var(--line);padding-bottom:0}
+.tabbar button{
+  flex:0 0 auto;display:flex;flex-direction:column;gap:1px;align-items:flex-start;
+  background:none;border:0;border-bottom:2px solid transparent;cursor:pointer;
+  padding:10px 16px 11px;color:var(--text-3);font:600 15px/1.35 'Bricolage Grotesque',system-ui,sans-serif;
+  letter-spacing:-.01em;transition:color .16s,border-color .16s}
+.tabbar button small{font:400 10.5px/1.3 'IBM Plex Mono',monospace;letter-spacing:.02em;opacity:.7;text-transform:none}
+.tabbar button:hover{color:var(--text-2)}
+.tabbar button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--eosin)}
+.view-intro{max-width:760px;margin:4px 0 16px}
+.view-intro h2{font:600 22px/1.4 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em;margin:0 0 6px;color:var(--text);padding-top:2px}
+.view-intro p{margin:0;color:var(--text-3);font-size:13.5px;line-height:1.55}
+
+/* ============ learn diagrams ============ */
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(480px,1fr));gap:14px}
+@media (min-width:1700px){.learn-grid{grid-template-columns:repeat(3,1fr)}}
+.diag h3{font:600 15px/1.45 'Bricolage Grotesque',system-ui,sans-serif;margin:0 0 9px;
+  color:var(--text);letter-spacing:-.01em;padding-top:1px}
+.diag .eyebrow{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-hema);margin:0 0 7px;display:block}
+.diag canvas{width:100%;display:block;border-radius:var(--r-md);background:
+  radial-gradient(115% 85% at 50% 8%,rgba(123,107,245,.10),transparent 72%),var(--panel-2);
+  border:1px solid var(--line)}
+.diag .diag-text{margin:10px 0 0;font-size:12.5px;line-height:1.6;color:var(--text-3)}
+.deep-row{display:flex;flex-wrap:wrap;gap:8px}
+.myth blockquote{margin:0 0 10px;padding-left:11px;border-left:2px solid var(--vhigh);
+  color:var(--text-2);font-style:italic;font-size:13.5px;line-height:1.5}
+.myth .myth-h{font:600 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-vhigh);margin-bottom:6px}
+.myth .myth-h.ok{color:var(--ink-range);margin-top:2px}
+.myth .myth-t{margin:0;font-size:12.5px;line-height:1.6;color:var(--text-2)}
+
+/* ============ progressive disclosure ============ */
+.more-btn{width:100%;justify-content:space-between;margin-top:10px;
+  border-style:dashed;color:var(--text-3);font-size:12px}
+.more-btn span{font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-eosin)}
+#ctrlMore{margin-top:10px}
+.meter-more{margin-top:8px;background:none;border-style:dashed;cursor:pointer}
+
+/* ============ welcome gate ============ */
+#welcome{position:fixed;inset:0;z-index:400;display:grid;place-items:center;padding:20px;
+  background:rgba(4,6,9,.86);backdrop-filter:blur(7px);animation:wIn .28s ease both}
+@keyframes wIn{from{opacity:0}to{opacity:1}}
+.w-card{max-width:470px;background:var(--panel);border:1px solid var(--line-2);
+  border-radius:var(--r-lg);padding:30px 30px 22px;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);animation:wUp .34s cubic-bezier(.2,.9,.25,1) both}
+@keyframes wUp{from{transform:translateY(14px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+.w-eye{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#FFC4D8,#FF5C93 34%,#96305A 62%,#170A11 100%);
+  box-shadow:0 0 0 4px rgba(255,92,147,.13),0 0 38px rgba(255,92,147,.30)}
+.w-card h2{font:700 32px/1.16 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em;margin:0}
+.w-sub{margin:7px 0 14px;color:var(--ink-eosin);font-size:13px}
+.w-body{margin:0 0 20px;color:var(--text-3);font-size:13px;line-height:1.6}
+.w-act{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.w-go{border-color:var(--eosin-2);color:#FFD7DF;background:rgba(255,92,147,.10)}
+.w-fine{margin:18px 0 0;font-size:10.5px;color:var(--text-3);opacity:.75;line-height:1.5}
+
+/* ============ coach marks ============ */
+#tour{position:fixed;inset:0;z-index:380;pointer-events:none;opacity:0;transition:opacity .2s}
+#tour.on{opacity:1;pointer-events:auto}
+#tour .t-pan{position:fixed;background:rgba(4,6,9,.74);transition:all .22s cubic-bezier(.3,.8,.3,1)}
+#tour .t-ring{position:fixed;border:2px solid var(--eosin);border-radius:10px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 26px rgba(255,92,147,.4);
+  transition:all .22s cubic-bezier(.3,.8,.3,1);pointer-events:none}
+#tour .t-tip{position:fixed;width:min(340px,calc(100vw - 24px));background:var(--panel);
+  border:1px solid var(--line-2);border-radius:var(--r-md);padding:15px 16px 13px;
+  box-shadow:0 20px 54px rgba(0,0,0,.62);transition:left .22s,top .22s}
+#tour .t-arrow{position:absolute;width:12px;height:12px;background:var(--panel);
+  border-left:1px solid var(--line-2);border-top:1px solid var(--line-2)}
+#tour .t-arrow.up{top:-7px;transform:rotate(45deg)}
+#tour .t-arrow.down{bottom:-7px;transform:rotate(225deg)}
+#tour .t-num{font-size:9.5px;letter-spacing:.1em;color:var(--ink-eosin);margin-bottom:5px}
+#tour h4{font:600 15px/1.4 'Bricolage Grotesque',system-ui,sans-serif;margin:0 0 6px;
+  letter-spacing:-.01em;color:var(--text)}
+#tour .t-tip p{margin:0 0 13px;font-size:12.5px;line-height:1.6;color:var(--text-3)}
+#tour .t-tip p b{color:var(--text-2)}
+#tour .t-act{display:flex;align-items:center;gap:6px}
+#tour .t-dots{display:flex;gap:4px;margin:0 auto}
+#tour .t-dots i{width:5px;height:5px;border-radius:50%;background:var(--line-2)}
+#tour .t-dots i.on{background:var(--eosin)}
+#tour .t-act button[disabled]{opacity:.35;cursor:default}
+body.tour-on{overflow:hidden}
+@media (max-width:700px){
+  .learn-grid{grid-template-columns:1fr}
+  .tabbar{overflow-x:auto}
+  .tabbar button{padding:8px 12px 9px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  #welcome,.w-card,#tour .t-pan,#tour .t-ring,#tour .t-tip{animation:none;transition:none}
+}
+
+.eyepiece.calling{animation:eyeCall 1.5s ease-in-out 3}
+@keyframes eyeCall{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,92,147,0),0 10px 30px rgba(0,0,0,.5)}
+  45%{box-shadow:0 0 0 7px rgba(255,92,147,.34),0 0 34px rgba(255,92,147,.5),0 10px 30px rgba(0,0,0,.5)}
+}
+@media (prefers-reduced-motion:reduce){.eyepiece.calling{animation:none;outline:2px solid var(--eosin)}}
 #mechMap{width:100%;height:330px;display:block;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r-md)}
 .mnode{cursor:pointer}
 .mnode rect{fill:var(--raise);stroke:var(--line-2);transition:all .2s}
 .mnode text{fill:var(--text-2);font-size:9px;font-family:var(--mono);pointer-events:none;transition:fill .2s}
-.mnode.hot rect{fill:rgba(240,138,160,.22);stroke:var(--eosin)}
+.mnode.hot rect{fill:rgba(255,92,147,.22);stroke:var(--eosin)}
 .mnode.hot text{fill:#FFE2E8}
 .medge{stroke:var(--line-2);stroke-width:1.2;fill:none;transition:all .2s;marker-end:url(#arw)}
 .medge.hot{stroke:var(--eosin);stroke-width:1.8}
@@ -391,7 +574,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 .myth{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r-md);padding:13px 15px;margin-bottom:10px}
 .myth .m{color:var(--text-3);font-size:12.5px;font-style:italic;margin-bottom:6px}
 .myth .t{color:var(--text);font-size:13.5px}
-.myth .t b{color:var(--eosin);font-weight:600}
+.myth .t b{color:var(--ink-eosin);font-weight:600}
 
 /* scenario cards */
 .scen{display:grid;gap:8px}
@@ -481,11 +664,65 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
     </div>
 
     <div class="tb-group">
+      <span class="tb-label">Theme</span>
+      <div class="seg" id="themeSeg">
+        <button data-theme-set="auto" aria-pressed="true">Auto</button>
+        <button data-theme-set="light" aria-pressed="false">Light</button>
+        <button data-theme-set="dark" aria-pressed="false">Dark</button>
+      </div>
+    </div>
+    <div class="tb-group">
+      <button class="btn" id="tourBtn" title="Replay the guided tour">? Tour</button>
       <button class="btn" id="playBtn">⏸ Pause</button>
       <button class="btn" id="resetBtn">↺ Reset day</button>
     </div>
   </header>
 
+  <div class="tabbar" id="tabbar" role="tablist" aria-label="Sections">
+    <button role="tab" data-view="learn" aria-selected="true">Learn<small>why it happens</small></button>
+    <button role="tab" data-view="sim"   aria-selected="false">Simulate<small>watch it happen</small></button>
+    <button role="tab" data-view="notes" aria-selected="false">Notes<small>myths &amp; sources</small></button>
+  </div>
+
+  <!-- ============ LEARN ============ -->
+  <div id="view-learn" class="view">
+    <div class="view-intro">
+      <h2>What is actually going on</h2>
+      <p>Six pathways, each animating the real sequence of events. Nothing to press — watch a loop or two.
+         The language toggle at the top changes every caption here.</p>
+    </div>
+    <div class="learn-grid" id="learnGrid"></div>
+    <div class="view-intro" style="margin-top:22px">
+      <h2>Go deeper</h2>
+      <p>These open a detail panel over the page.</p>
+    </div>
+    <div class="deep-row">
+      <button class="btn" data-open="story">▶ Walk through how type 1 begins</button>
+      <button class="btn" data-open="islet">Islet under the lens</button>
+      <button class="btn" data-open="compare">Healthy islet vs type 1</button>
+      <button class="btn" data-open="mech">Mechanism map</button>
+    </div>
+  </div>
+
+  <!-- ============ NOTES ============ -->
+  <div id="view-notes" class="view" hidden>
+    <div class="view-intro">
+      <h2>What people get wrong</h2>
+      <p>Most of these are said kindly and land badly.</p>
+    </div>
+    <div class="learn-grid" id="notesMyths"></div>
+    <div class="view-intro" style="margin-top:22px">
+      <h2>Where the numbers come from</h2>
+      <p>Model structure, constants and the reasoning behind them.</p>
+    </div>
+    <div class="deep-row">
+      <button class="btn" data-open="refs">Notes &amp; sources</button>
+      <button class="btn" data-open="recap">Session recap</button>
+    </div>
+  </div>
+
+  <!-- ============ SIMULATE ============ -->
+  <div id="view-sim" class="view" hidden>
   <main class="grid">
 
     <!-- ============ BODY ============ -->
@@ -504,7 +741,29 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
               <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
             </radialGradient>
             <filter id="soft"><feGaussianBlur stdDeviation="3"/></filter>
+
+            <!-- Tissue edges. A clean bezier reads as a diagram; displacing it
+                 through fractal noise reads as something that grew. Static
+                 rather than animated: the shapes already breathe and pulse via
+                 transforms, and animated turbulence over this area is costly. -->
+            <filter id="tissue" x="-15%" y="-15%" width="130%" height="130%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.021" numOctaves="4" seed="11" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="6.5"
+                                 xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <filter id="tissueFine" x="-12%" y="-12%" width="124%" height="124%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.055" numOctaves="3" seed="4" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2"
+                                 xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <!-- faint parenchymal speckle laid over the whole field -->
+            <filter id="speckle">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
+              <feColorMatrix values="0 0 0 0 0.55  0 0 0 0 0.42  0 0 0 0 0.50  0 0 0 -0.72 0.16"/>
+            </filter>
           </defs>
+          <rect x="0" y="0" width="400" height="780" filter="url(#speckle)"
+                opacity=".5" pointer-events="none"/>
 
           <!-- silhouette -->
           <g id="figure">
@@ -523,7 +782,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 
           <!-- CARDIOVASCULAR -->
           <g class="sys" id="sys-cardio" data-on="1">
-            <g id="vesselGroup">
+            <g id="vesselGroup" filter="url(#tissueFine)">
               <path class="vessel" d="M200,206 L200,300 L200,420"/>
               <path class="vessel" d="M200,236 L166,244 L124,300 L104,392"/>
               <path class="vessel" d="M200,236 L234,244 L276,300 L296,392"/>
@@ -534,7 +793,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
               <path class="vessel vein" d="M188,196 L188,150 L188,108"/>
             </g>
             <g class="organ o-cardio" data-organ="heart" tabindex="0" role="button" aria-label="Heart">
-              <path id="heartShape" fill="#EF6E7B" fill-opacity=".55" stroke="#EF6E7B" stroke-width="1.4"
+              <path id="heartShape" filter="url(#tissue)" fill="#EF6E7B" fill-opacity=".55" stroke="#EF6E7B" stroke-width="1.4"
                 d="M186,206 c-13,-15 -33,-6 -33,11 c0,19 22,32 33,42 c11,-10 33,-23 33,-42 c0,-17 -20,-26 -33,-11 z"/>
               <text class="olabel" x="150" y="196" text-anchor="end">heart</text>
             </g>
@@ -543,24 +802,24 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
           <!-- METABOLIC -->
           <g class="sys" id="sys-metab" data-on="1">
             <g class="organ o-metab" data-organ="liver" tabindex="0" role="button" aria-label="Liver">
-              <path id="liverShape" fill="#E8B36A" fill-opacity=".42" stroke="#E8B36A" stroke-width="1.3"
+              <path id="liverShape" filter="url(#tissue)" fill="#E8B36A" fill-opacity=".42" stroke="#E8B36A" stroke-width="1.3"
                 d="M124,278 c22,-9 62,-10 82,-3 c8,3 9,12 4,20 c-8,13 -30,24 -54,24 c-20,0 -34,-8 -35,-19 c-1,-8 -3,-16 3,-22 z"/>
               <text class="olabel" x="120" y="272" text-anchor="end">liver</text>
             </g>
             <g class="organ o-metab" data-organ="muscle" tabindex="0" role="button" aria-label="Skeletal muscle">
-              <path id="muscleL" fill="none" stroke="#E8B36A" stroke-opacity=".5" stroke-width="17" stroke-linecap="round" d="M177,506 L170,570"/>
-              <path id="muscleR" fill="none" stroke="#E8B36A" stroke-opacity=".5" stroke-width="17" stroke-linecap="round" d="M223,506 L230,570"/>
-              <path id="muscleA1" fill="none" stroke="#E8B36A" stroke-opacity=".5" stroke-width="12" stroke-linecap="round" d="M156,192 L126,238"/>
-              <path id="muscleA2" fill="none" stroke="#E8B36A" stroke-opacity=".5" stroke-width="12" stroke-linecap="round" d="M244,192 L274,238"/>
+              <path id="muscleL" filter="url(#tissueFine)" fill="none" stroke="#E8B36A" stroke-opacity=".5" stroke-width="17" stroke-linecap="round" d="M177,506 L170,570"/>
+              <path id="muscleR" filter="url(#tissueFine)" fill="none" stroke="#E8B36A" stroke-opacity=".5" stroke-width="17" stroke-linecap="round" d="M223,506 L230,570"/>
+              <path id="muscleA1" filter="url(#tissueFine)" fill="none" stroke="#E8B36A" stroke-opacity=".5" stroke-width="12" stroke-linecap="round" d="M156,192 L126,238"/>
+              <path id="muscleA2" filter="url(#tissueFine)" fill="none" stroke="#E8B36A" stroke-opacity=".5" stroke-width="12" stroke-linecap="round" d="M244,192 L274,238"/>
               <text class="olabel" x="150" y="556" text-anchor="end">muscle</text>
             </g>
             <g class="organ o-metab" data-organ="adipose" tabindex="0" role="button" aria-label="Adipose tissue">
-              <path id="adiposeShape" fill="#E8B36A" fill-opacity=".18" stroke="#E8B36A" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="4 3"
+              <path id="adiposeShape" filter="url(#tissue)" fill="#E8B36A" fill-opacity=".18" stroke="#E8B36A" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="4 3"
                 d="M142,408 c18,-8 78,-8 116,0 c6,3 6,28 0,32 c-30,10 -86,10 -116,0 c-6,-4 -6,-29 0,-32 z"/>
               <text class="olabel" x="266" y="404">adipose</text>
             </g>
             <g class="organ o-metab" data-organ="gut" tabindex="0" role="button" aria-label="Gut and carbohydrate absorption">
-              <path id="gutShape" fill="none" stroke="#E8B36A" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"
+              <path id="gutShape" filter="url(#tissueFine)" fill="none" stroke="#E8B36A" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"
                 d="M176,360 c-14,0 -14,14 0,14 h44 c14,0 14,14 0,14 h-44 c-14,0 -14,14 0,14 h48"/>
               <text class="olabel" x="170" y="356" text-anchor="end">gut</text>
             </g>
@@ -569,7 +828,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
           <!-- ENDOCRINE -->
           <g class="sys" id="sys-endo" data-on="1">
             <g class="organ o-endo" data-organ="pancreas" tabindex="0" role="button" aria-label="Pancreas">
-              <path id="pancreasShape" fill="#F08AA0" fill-opacity=".55" stroke="#F08AA0" stroke-width="1.5"
+              <path id="pancreasShape" filter="url(#tissue)" fill="#F08AA0" fill-opacity=".55" stroke="#F08AA0" stroke-width="1.5"
                 d="M168,336 c8,-9 26,-9 40,-11 c22,-3 44,-9 58,-14 c8,-3 12,7 4,11 c-16,8 -40,15 -62,19 c-14,3 -30,5 -38,5 c-6,0 -6,-6 -2,-10 z"/>
               <circle id="isletDot" cx="196" cy="333" r="5" fill="#FFD9E2" stroke="#F08AA0" stroke-width="1"/>
               <text class="olabel" x="272" y="304">pancreas</text>
@@ -592,13 +851,13 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
           <!-- RENAL -->
           <g class="sys" id="sys-renal" data-on="1">
             <g class="organ o-renal" data-organ="kidney" tabindex="0" role="button" aria-label="Kidneys">
-              <path id="kidL" fill="#5BC8D6" fill-opacity=".42" stroke="#5BC8D6" stroke-width="1.3"
+              <path id="kidL" filter="url(#tissue)" fill="#5BC8D6" fill-opacity=".42" stroke="#5BC8D6" stroke-width="1.3"
                 d="M148,350 c12,0 18,10 18,22 c0,12 -6,22 -18,22 c-8,0 -12,-6 -8,-12 c4,-6 4,-14 0,-20 c-4,-6 0,-12 8,-12 z"/>
-              <path id="kidR" fill="#5BC8D6" fill-opacity=".42" stroke="#5BC8D6" stroke-width="1.3"
+              <path id="kidR" filter="url(#tissue)" fill="#5BC8D6" fill-opacity=".42" stroke="#5BC8D6" stroke-width="1.3"
                 d="M252,350 c-12,0 -18,10 -18,22 c0,12 6,22 18,22 c8,0 12,-6 8,-12 c-4,-6 -4,-14 0,-20 c4,-6 0,-12 -8,-12 z"/>
               <path class="vessel" stroke="#5BC8D6" stroke-opacity=".3" d="M156,394 L188,452"/>
               <path class="vessel" stroke="#5BC8D6" stroke-opacity=".3" d="M244,394 L212,452"/>
-              <path id="bladderShape" fill="#5BC8D6" fill-opacity=".3" stroke="#5BC8D6" stroke-width="1.2"
+              <path id="bladderShape" filter="url(#tissue)" fill="#5BC8D6" fill-opacity=".3" stroke="#5BC8D6" stroke-width="1.2"
                 d="M186,452 h28 c8,0 12,6 12,13 c0,9 -8,15 -26,15 c-18,0 -26,-6 -26,-15 c0,-7 4,-13 12,-13 z"/>
               <text class="olabel" x="270" y="346">kidneys</text>
             </g>
@@ -622,7 +881,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
           <!-- NERVOUS -->
           <g class="sys" id="sys-neuro" data-on="1">
             <g class="organ o-neuro" data-organ="brain" tabindex="0" role="button" aria-label="Brain">
-              <path id="brainShape" fill="#B8A0F0" fill-opacity=".32" stroke="#B8A0F0" stroke-width="1.3"
+              <path id="brainShape" filter="url(#tissue)" fill="#B8A0F0" fill-opacity=".32" stroke="#B8A0F0" stroke-width="1.3"
                 d="M200,44 c16,0 28,10 28,22 c6,4 6,14 0,18 c-2,10 -14,16 -28,16 c-14,0 -26,-6 -28,-16 c-6,-4 -6,-14 0,-18 c0,-12 12,-22 28,-22 z"/>
               <path fill="none" stroke="#B8A0F0" stroke-opacity=".5" stroke-width="1" d="M200,46 L200,98 M182,58 c8,4 8,12 0,16 M218,58 c-8,4 -8,12 0,16"/>
               <text class="olabel" x="236" y="60">brain</text>
@@ -657,7 +916,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       <div class="card-head">
         <span class="card-title">Continuous glucose trace</span>
         <span class="clock mono" id="clock">Day 1 · 07:00</span>
-        <span class="tiny" id="scenTag" style="border-color:var(--eosin-2);color:var(--eosin)">Type 1 · manual</span>
+        <span class="tiny" id="scenTag" style="border-color:var(--eosin-2);color:var(--ink-eosin)">Type 1 · manual</span>
       </div>
 
       <div class="cgm">
@@ -670,9 +929,9 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
           <span class="cgm-arrow mono" id="gArrow">→</span>
         </div>
         <div class="cgm-stats">
-          <div class="stat"><div class="k">In range</div><div class="v" id="tirVal" style="color:var(--range)">—</div></div>
-          <div class="stat"><div class="k">Below</div><div class="v" id="belowVal" style="color:var(--low)">—</div></div>
-          <div class="stat"><div class="k">Above</div><div class="v" id="aboveVal" style="color:var(--high)">—</div></div>
+          <div class="stat"><div class="k">In range</div><div class="v" id="tirVal" style="color:var(--ink-range)">—</div></div>
+          <div class="stat"><div class="k">Below</div><div class="v" id="belowVal" style="color:var(--ink-low)">—</div></div>
+          <div class="stat"><div class="k">Above</div><div class="v" id="aboveVal" style="color:var(--ink-high)">—</div></div>
           <div class="stat"><div class="k">GMI</div><div class="v" id="gmiVal">—</div></div>
         </div>
       </div>
@@ -698,11 +957,14 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       <div class="meters" id="meters">
         <div class="meter"><div class="k">Insulin on board</div><div class="v mono" id="mIOB">0.0 U</div><div class="bar"><i id="bIOB" style="width:0%;background:var(--hema)"></i></div></div>
         <div class="meter"><div class="k">Carbs on board</div><div class="v mono" id="mCOB">0 g</div><div class="bar"><i id="bCOB" style="width:0%;background:#E8B36A"></i></div></div>
-        <div class="meter"><div class="k">Liver glycogen</div><div class="v mono" id="mGly">100%</div><div class="bar"><i id="bGly" style="width:100%;background:#E8B36A"></i></div></div>
         <div class="meter"><div class="k">Ketones</div><div class="v mono" id="mKet">0.1 mmol/L</div><div class="bar"><i id="bKet" style="width:2%;background:var(--vhigh)"></i></div></div>
+      </div>
+      <div class="meters" id="metersMore" hidden>
+        <div class="meter"><div class="k">Liver glycogen</div><div class="v mono" id="mGly">100%</div><div class="bar"><i id="bGly" style="width:100%;background:#E8B36A"></i></div></div>
         <div class="meter"><div class="k">Beta-cell mass</div><div class="v mono" id="mBeta">0%</div><div class="bar"><i id="bBeta" style="width:0%;background:var(--eosin)"></i></div></div>
         <div class="meter"><div class="k">Plasma insulin</div><div class="v mono" id="mIns">0 µU/mL</div><div class="bar"><i id="bIns" style="width:0%;background:var(--hema)"></i></div></div>
       </div>
+      <button class="tiny meter-more" id="meterMoreBtn" aria-expanded="false">More readings</button>
     </section>
 
     <!-- ============ CONTROLS ============ -->
@@ -710,7 +972,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       <div class="card-head"><span class="card-title">Interventions</span>
         <span class="tiny" style="border:0;color:var(--text-3);text-transform:none;letter-spacing:0">Everything here changes the trace within seconds</span>
       </div>
-      <div class="ctrl-grid">
+      <div class="ctrl-grid" id="ctrlBasics">
 
         <div class="ctrl-block">
           <h4>Insulin</h4>
@@ -747,6 +1009,14 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
           <div class="hint" id="actHint">Working muscle pulls in glucose without needing insulin — GLUT4 moves to the membrane on contraction alone.</div>
         </div>
 
+      </div>
+
+      <button class="btn more-btn" id="moreBtn" aria-expanded="false">
+        More interventions &mdash; glucagon, closed loop, type 2 medicines <span>Show</span>
+      </button>
+
+      <div class="ctrl-grid" id="ctrlMore" hidden>
+
         <div class="ctrl-block">
           <h4>Emergency</h4>
           <div class="btn-row">
@@ -777,6 +1047,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       </div>
     </section>
   </main>
+  </div>
 
   <div class="disclaimer">
     <b>This is a teaching model, not medical advice.</b> The physiology is simplified, the constants are tuned for legibility on screen, and the doses are illustrative. Real insulin dosing depends on an individual's sensitivity, ratios, and clinical guidance. Nothing here should ever be used to make a treatment decision. If you or someone you love has diabetes, work with your care team.
@@ -784,16 +1055,11 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 </div>
 
 <nav class="rail">
-  <span class="railtitle">Explore</span>
-  <button class="btn" data-open="story">▶ How type 1 begins</button>
+  <span class="railtitle">Try a situation</span>
   <button class="btn" data-open="scenarios">Scenarios</button>
-  <button class="btn" data-open="islet">Islet under the lens</button>
-  <button class="btn" data-open="compare">Healthy vs type 1</button>
   <button class="btn" data-open="challenge">Be the pancreas</button>
-  <button class="btn" data-open="myths">What people get wrong</button>
-  <button class="btn" data-open="mech">Mechanism map</button>
+  <button class="btn" data-open="story">▶ How type 1 begins</button>
   <button class="btn" data-open="recap">Session recap</button>
-  <button class="btn" data-open="refs">Notes &amp; sources</button>
 </nav>
 
 <div class="scrim" id="scrim"></div>
@@ -814,6 +1080,174 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 <div id="toasts"></div>
 
 <script>
+/* ================================================================
+   ORGANIC — motion and shape helpers
+
+   Everything a body does is slightly irregular. Blood does not move at
+   constant speed, it surges with each heartbeat and slows between. Cells
+   are not circles; their membranes ripple. Nothing in tissue travels in a
+   straight line. These helpers exist so the drawing code can be organic
+   without every call site growing its own noise function.
+   ================================================================ */
+
+const ORG = (() => {
+
+  /* ---- smooth value noise -------------------------------------------
+     Hash-based, no tables, deterministic per seed. fbm() sums three
+     octaves so drift has both a slow sway and a fine tremor.          */
+  function hash(n){ const s = Math.sin(n * 127.1) * 43758.5453123; return s - Math.floor(s); }
+  function vnoise(x){
+    const i = Math.floor(x), f = x - i;
+    const u = f * f * (3 - 2 * f);                  // smoothstep
+    return hash(i) + (hash(i + 1) - hash(i)) * u;   // 0..1
+  }
+  const snoise = x => vnoise(x) * 2 - 1;            // -1..1
+  function fbm(x){
+    return snoise(x) * 0.58 + snoise(x * 2.31 + 11.7) * 0.28 + snoise(x * 4.73 + 31.3) * 0.14;
+  }
+
+  /* ---- cardiac waveform ---------------------------------------------
+     Not a sine. A sharp systolic upstroke over the first third of the
+     cycle, then a long quiet diastole with a small dicrotic bump. Used
+     to modulate particle speed so flow visibly pulses.                */
+  function cardiac(t, bpm){
+    const ph = (t * (bpm || 66) / 60) % 1;
+    if (ph < 0.30) return Math.sin(ph / 0.30 * Math.PI);
+    if (ph < 0.42) return -0.10 * Math.sin((ph - 0.30) / 0.12 * Math.PI);
+    return 0;
+  }
+  /* ~15 breaths/min */
+  const breath = t => Math.sin(t * Math.PI * 2 / 4.0);
+
+  /* ---- organic outline ----------------------------------------------
+     A closed shape built from radially perturbed points, smoothed by
+     drawing quadratics through the midpoints so there are no corners.
+     Advance `t` and the membrane undulates.                           */
+  function blob(ctx, cx0, cy0, r, seed, t, wob, lobes){
+    const n = lobes || 9, pts = [];
+    for (let i = 0; i < n; i++){
+      const a  = i / n * Math.PI * 2;
+      const rr = r * (1 + wob * fbm(seed + i * 1.73 + t * 0.6));
+      pts.push([cx0 + Math.cos(a) * rr, cy0 + Math.sin(a) * rr]);
+    }
+    const mid = (p, q) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+    const m0 = mid(pts[n - 1], pts[0]);
+    ctx.beginPath();
+    ctx.moveTo(m0[0], m0[1]);
+    for (let i = 0; i < n; i++){
+      const p = pts[i], m = mid(pts[i], pts[(i + 1) % n]);
+      ctx.quadraticCurveTo(p[0], p[1], m[0], m[1]);
+    }
+    ctx.closePath();
+  }
+
+  /* ---- glow sprites -------------------------------------------------
+     A hard-edged arc reads as a bead of plastic. A pre-rendered radial
+     gradient reads as something suspended in fluid. Rendered once per
+     colour into an offscreen canvas, then blitted — cheaper than
+     building a gradient per particle per frame.                       */
+  const sprites = new Map();
+  function sprite(rgb, core){
+    const key = rgb + '|' + core;
+    let c = sprites.get(key);
+    if (c) return c;
+    const S = 64;
+    c = document.createElement('canvas'); c.width = c.height = S;
+    const g = c.getContext('2d');
+    const grd = g.createRadialGradient(S/2, S/2, 0, S/2, S/2, S/2);
+    grd.addColorStop(0,               `rgba(${rgb},1)`);
+    grd.addColorStop(core ? 0.20 : 0.34, `rgba(${rgb},0.80)`);
+    grd.addColorStop(0.52,            `rgba(${rgb},0.24)`);
+    grd.addColorStop(0.78,            `rgba(${rgb},0.06)`);
+    grd.addColorStop(1,               `rgba(${rgb},0)`);
+    g.fillStyle = grd; g.fillRect(0, 0, S, S);
+    sprites.set(key, c);
+    return c;
+  }
+  function dot(ctx, x, y, r, rgb, alpha, core){
+    const s = sprite(rgb, core !== false), R = r * 2.6;
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(s, x - R, y - R, R * 2, R * 2);
+  }
+
+  /* ---- a deformable body in flow ------------------------------------
+     Nothing suspended in blood is a symmetric dot. Things elongate along
+     the direction they are moving, tumble slowly, and sit at different
+     depths in the vessel — so they differ in size and in how sharply they
+     read. Drawing the sprite through a rotated, non-uniform transform gets
+     all three from one blit.                                          */
+  function cell(ctx, x, y, r, ang, stretch, rgb, alpha){
+    const s = sprite(rgb, true), R = r * 2.6;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(x, y);
+    if (ang) ctx.rotate(ang);
+    ctx.drawImage(s, -R * stretch, -R / stretch, R * 2 * stretch, R * 2 / stretch);
+    ctx.restore();
+  }
+  /* heading and elongation from the last two remembered positions */
+  function flowShape(p, base){
+    if (!p.h || p.h.length < 2) return [0, 1];
+    const a = p.h[p.h.length - 2], b = p.h[p.h.length - 1];
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const v  = Math.hypot(dx, dy);
+    if (v < 0.02) return [p.rot || 0, 1];
+    return [Math.atan2(dy, dx), 1 + Math.min(0.85, v * (base || 0.09))];
+  }
+
+  /* ---- cytoplasmic granularity --------------------------------------
+     A flat fill reads as a vector shape. A scatter of faint dots inside
+     the outline reads as cytoplasm.                                   */
+  function grain(ctx, x, y, r, seed, n, rgb, alpha){
+    for (let i = 0; i < n; i++){
+      const a  = vnoise(seed + i * 3.7) * Math.PI * 2;
+      const rr = Math.sqrt(vnoise(seed + i * 8.1)) * r * 0.82;
+      ctx.fillStyle = `rgba(${rgb},${alpha})`;
+      ctx.beginPath();
+      ctx.arc(x + Math.cos(a) * rr, y + Math.sin(a) * rr, r * 0.055 + vnoise(seed + i) * r * 0.03, 0, 7);
+      ctx.fill();
+    }
+  }
+
+  /* ---- an irregular, rotated organic outline -------------------------
+     blob() is radially symmetric on average. Real cells are not: they
+     have an aspect ratio and an orientation. This wraps blob in a squash
+     and a rotation so no two cells share a silhouette.                */
+  function bodyShape(ctx, x, y, r, seed, t, wob, lobes, aspect, rot){
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot || 0);
+    ctx.scale(aspect || 1, 1 / (aspect || 1));
+    blob(ctx, 0, 0, r, seed, t, wob, lobes);
+    ctx.restore();
+  }
+
+  /* ---- motion trail -------------------------------------------------
+     Two segments of decaying alpha behind a particle. Enough to read as
+     movement through fluid; cheap enough for 200 of them.             */
+  function trail(ctx, h, rgb, w, alpha){
+    if (!h || h.length < 2) return;
+    ctx.lineCap = 'round';
+    for (let i = 1; i < h.length; i++){
+      const f = i / h.length;
+      ctx.strokeStyle = `rgba(${rgb},${(alpha * f * 0.42).toFixed(3)})`;
+      ctx.lineWidth = w * (0.35 + f * 0.65);
+      ctx.beginPath();
+      ctx.moveTo(h[i-1][0], h[i-1][1]);
+      ctx.lineTo(h[i][0],   h[i][1]);
+      ctx.stroke();
+    }
+  }
+  /* keep a short position history on a particle */
+  function remember(p, x, y, n){
+    if (!p.h) p.h = [];
+    p.h.push([x, y]);
+    if (p.h.length > (n || 4)) p.h.shift();
+  }
+
+  return { fbm, snoise, vnoise, cardiac, breath, blob, dot, trail, remember, sprite,
+           cell, flowShape, grain, bodyShape };
+})();
 /* ================================================================
    ISLET — a live glucose / insulin simulation
    All state is in memory. No storage, no network, no backend.
@@ -1374,28 +1808,28 @@ const Chart = (() => {
     const yHi = yOf(CONFIG.high), yLo = yOf(CONFIG.low);
     const yVHi = yOf(CONFIG.veryHigh), yVLo = yOf(CONFIG.lowSevere);
 
-    cx.fillStyle = 'rgba(55,211,153,.10)';
+    cx.fillStyle = 'rgba(42,214,143,.10)';
     cx.fillRect(PAD.l, yHi, plotW, yLo - yHi);
 
-    cx.fillStyle = 'rgba(242,166,59,.055)';
+    cx.fillStyle = 'rgba(255,174,31,.055)';
     cx.fillRect(PAD.l, yVHi, plotW, yHi - yVHi);
-    cx.fillStyle = 'rgba(226,96,60,.07)';
+    cx.fillStyle = 'rgba(255,106,69,.07)';
     cx.fillRect(PAD.l, PAD.t, plotW, yVHi - PAD.t);
-    hatch(PAD.t, yVHi, '#E2603C');
+    hatch(PAD.t, yVHi, '#FF6A45');
 
-    cx.fillStyle = 'rgba(110,168,254,.06)';
+    cx.fillStyle = 'rgba(75,157,255,.06)';
     cx.fillRect(PAD.l, yLo, plotW, yVLo - yLo);
-    cx.fillStyle = 'rgba(229,72,77,.09)';
+    cx.fillStyle = 'rgba(255,71,87,.09)';
     cx.fillRect(PAD.l, yVLo, plotW, H - PAD.b - yVLo);
-    hatch(yVLo, H - PAD.b, '#E5484D');
+    hatch(yVLo, H - PAD.b, '#FF4757');
 
     /* band edges */
     cx.setLineDash([4,4]); cx.lineWidth = 1;
-    cx.strokeStyle = 'rgba(55,211,153,.55)';
+    cx.strokeStyle = 'rgba(42,214,143,.55)';
     [yHi, yLo].forEach(y => { cx.beginPath(); cx.moveTo(PAD.l, y); cx.lineTo(W - PAD.r, y); cx.stroke(); });
-    cx.strokeStyle = 'rgba(226,96,60,.4)';
+    cx.strokeStyle = 'rgba(255,106,69,.4)';
     cx.beginPath(); cx.moveTo(PAD.l, yVHi); cx.lineTo(W - PAD.r, yVHi); cx.stroke();
-    cx.strokeStyle = 'rgba(229,72,77,.4)';
+    cx.strokeStyle = 'rgba(255,71,87,.4)';
     cx.beginPath(); cx.moveTo(PAD.l, yVLo); cx.lineTo(W - PAD.r, yVLo); cx.stroke();
     cx.setLineDash([]);
 
@@ -1405,18 +1839,18 @@ const Chart = (() => {
     const ticks = unitMode === 'mmol' ? [54,70,100,180,250,350] : [40,70,100,180,250,350];
     ticks.forEach(g => {
       const y = yOf(g);
-      cx.fillStyle = (g === 70 || g === 180) ? '#37D399' : '#5F7382';
+      cx.fillStyle = (g === 70 || g === 180) ? '#2AD68F' : '#7C8794';
       cx.fillText(unitMode === 'mmol' ? (g/18).toFixed(1) : g, PAD.l - 7, y);
     });
 
     /* zone labels on the right */
     cx.textAlign = 'left';
     const lbl = [
-      [(yHi + yLo) / 2, 'IN RANGE', '#37D399'],
-      [(yVHi + yHi) / 2, 'HIGH', '#F2A63B'],
-      [PAD.t + (yVHi - PAD.t) / 2, 'VERY HIGH', '#E2603C'],
-      [(yLo + yVLo) / 2, 'LOW', '#6EA8FE'],
-      [yVLo + (H - PAD.b - yVLo) / 2, 'SEVERE', '#E5484D']
+      [(yHi + yLo) / 2, 'IN RANGE', '#2AD68F'],
+      [(yVHi + yHi) / 2, 'HIGH', '#FFAE1F'],
+      [PAD.t + (yVHi - PAD.t) / 2, 'VERY HIGH', '#FF6A45'],
+      [(yLo + yVLo) / 2, 'LOW', '#4B9DFF'],
+      [yVLo + (H - PAD.b - yVLo) / 2, 'SEVERE', '#FF4757']
     ];
     cx.font = '500 8px "IBM Plex Mono", monospace';
     lbl.forEach(([y, text, c]) => {
@@ -1438,7 +1872,7 @@ const Chart = (() => {
       cx.strokeStyle = 'rgba(255,255,255,.045)'; cx.lineWidth = 1;
       cx.beginPath(); cx.moveTo(x, PAD.t); cx.lineTo(x, H - PAD.b); cx.stroke();
       const hh = String(Math.floor((a % 1440) / 60)).padStart(2,'0');
-      cx.fillStyle = '#5F7382';
+      cx.fillStyle = '#7C8794';
       cx.fillText(hh + ':00', x, H - PAD.b + 6);
     }
 
@@ -1459,9 +1893,9 @@ const Chart = (() => {
       });
       cx.stroke(); cx.restore();
     }
-    if (traces.insulin)  overlay('I',   90,  '#9186EC');
-    if (traces.glucagon) overlay('gcg', 180, '#E8B36A', [5,3]);
-    if (traces.ketones)  overlay('ket', 8,   '#E2603C', [2,3]);
+    if (traces.insulin)  overlay('I',   90,  '#7B6BF5');
+    if (traces.glucagon) overlay('gcg', 180, '#F0B85F', [5,3]);
+    if (traces.ketones)  overlay('ket', 8,   '#FF6A45', [2,3]);
 
     /* --- glucose trace, coloured per segment by zone --- */
     if (seg.length > 1){
@@ -1494,16 +1928,16 @@ const Chart = (() => {
       const x = xOf(e.t, t0, t1);
       if (x < PAD.l || x > W - PAD.r) return;
       if (e.kind === 'insulin'){
-        cx.fillStyle = '#9186EC';
+        cx.fillStyle = '#7B6BF5';
         cx.beginPath(); cx.moveTo(x, py); cx.lineTo(x - 3.4, py + 6); cx.lineTo(x + 3.4, py + 6); cx.closePath(); cx.fill();
       } else if (e.kind === 'carb'){
-        cx.fillStyle = '#E8B36A';
+        cx.fillStyle = '#F0B85F';
         cx.beginPath(); cx.arc(x, py + 3, 3.1, 0, 7); cx.fill();
       } else if (e.kind === 'glucagon'){
-        cx.fillStyle = '#6EA8FE';
+        cx.fillStyle = '#4B9DFF';
         cx.fillRect(x - 3, py, 6, 6);
       } else if (e.kind === 'dka'){
-        cx.fillStyle = '#E2603C';
+        cx.fillStyle = '#FF6A45';
         cx.beginPath(); cx.moveTo(x, py); cx.lineTo(x + 4, py + 4); cx.lineTo(x, py + 8); cx.lineTo(x - 4, py + 4); cx.closePath(); cx.fill();
       }
     });
@@ -1547,6 +1981,28 @@ const Body = (() => {
   const py = y => offY + y * k;
 
   /* ---- circulation loops, in SVG coordinates ---- */
+  /* Catmull-Rom resample. The vessel outlines were authored as polylines,
+     which meant particles travelled in visibly straight runs and turned
+     corners. Resampling through a spline is what makes flow look like flow. */
+  function smoothClosed(pts, per){
+    const n = pts.length, out = [], P = i => pts[((i % n) + n) % n];
+    for (let i = 0; i < n; i++){
+      const p0 = P(i-1), p1 = P(i), p2 = P(i+1), p3 = P(i+2);
+      for (let j = 0; j < per; j++){
+        const t = j / per, t2 = t * t, t3 = t2 * t;
+        out.push([
+          0.5*(2*p1[0] + (-p0[0]+p2[0])*t + (2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2 + (-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
+          0.5*(2*p1[1] + (-p0[1]+p2[1])*t + (2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2 + (-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)
+        ]);
+      }
+    }
+    return out;
+  }
+
+  let clock = 0;   // seconds of wall time, drives pulse and drift
+  let bpmNow = 68;
+  let heartEl = null, vesselEl = null, torsoEl = null;
+
   const LOOPS = [
     [[186,236],[200,300],[200,420],[176,468],[168,566],[162,652],[164,722],
      [174,722],[172,652],[178,566],[186,468],[212,420],[212,300],[196,240]],
@@ -1558,7 +2014,7 @@ const Body = (() => {
      [284,392],[264,302],[222,252],[204,244]],
     [[192,224],[200,196],[200,150],[200,104],[196,84],
      [188,90],[188,150],[188,196],[196,222]]
-  ].map(pts => {
+  ].map(pts => smoothClosed(pts, 7)).map(pts => {
     let len = 0; const segs = [];
     for (let i = 1; i < pts.length; i++){
       const d = Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]);
@@ -1598,12 +2054,16 @@ const Body = (() => {
   function newGlucose(){
     const li = (Math.random()*LOOPS.length)|0;
     return { loop:li, s:Math.random(), v:rnd(.00055,.0011), mode:'flow',
-             tx:0, ty:0, x:0, y:0, life:1, wob:Math.random()*6.28 };
+             tx:0, ty:0, x:0, y:0, life:1, wob:Math.random()*6.28,
+             sd:Math.random()*900, sz:rnd(.82,1.28), h:null,
+             z:rnd(.62,1.30), rot:Math.random()*6.28, spin:rnd(-.03,.03) };
   }
   function newInsulin(atInjection){
     const li = (Math.random()*LOOPS.length)|0;
     return { loop:li, s:atInjection ? 0.46 : Math.random(), v:rnd(.0009,.0016),
-             life:1, x:0, y:0, wob:Math.random()*6.28 };
+             life:1, x:0, y:0, wob:Math.random()*6.28,
+             sd:Math.random()*900, sz:rnd(.8,1.3), h:null,
+             z:rnd(.62,1.30), rot:Math.random()*6.28, spin:rnd(-.05,.05) };
   }
 
   function spawnInsulinBurst(units, auto){
@@ -1611,7 +2071,7 @@ const Body = (() => {
     for (let i = 0; i < n; i++) insulin.push(newInsulin(true));
     for (let i = 0; i < 12; i++)
       sparks.push({ x:218 + rnd(-6,6), y:428 + rnd(-6,6), vx:rnd(-.5,.5), vy:rnd(-.9,-.1),
-                    life:1, c:auto ? '#6EA8FE' : '#9186EC' });
+                    life:1, c:auto ? '#4B9DFF' : '#7B6BF5' });
   }
   window.spawnInsulinBurst = spawnInsulinBurst;
 
@@ -1627,6 +2087,7 @@ const Body = (() => {
 
   /* ---- per-frame update ---- */
   function update(dtReal){
+    clock += dtReal;
     const d = derivatives();
     const gateOpen = clamp(S.X / 14, 0, 1);           // how open GLUT4 is
     const targetG = clamp(Math.round(S.G / 6.2), 12, 175);
@@ -1645,13 +2106,21 @@ const Body = (() => {
     const iiTake = clamp(d.iiUptake / 4.5, 0, 1);      // brain + contraction
     const spill  = clamp(d.renal / 3.0, 0, 1);
     const f = clamp(dtReal, 0, .05) * 60;              // frame factor
+    /* Flow surges with systole and slacks in diastole. Exercise raises the
+       rate; the pulse is what stops the stream looking like a conveyor. */
+    const bpm  = S.activity === 'exercising' ? 148 : S.activity === 'walking' ? 96
+               : S.activity === 'sleeping' ? 52 : 68;
+    bpmNow = bpm;
+    const beat = 1 + 0.62 * ORG.cardiac(clock, bpm);
 
     for (const p of glucose){
       if (p.mode === 'flow'){
-        p.s += p.v * f * (1 + 0.5 * (S.activity === 'exercising' ? 1 : 0));
+        p.s += p.v * f * beat * (1 + 0.5 * (S.activity === 'exercising' ? 1 : 0));
         const [x,y] = pointOn(LOOPS[p.loop], p.s);
-        p.wob += .18 * f;
-        p.x = x + Math.sin(p.wob) * 1.6; p.y = y + Math.cos(p.wob * .8) * 1.6;
+        // lateral wander: two noise octaves, so no two cells drift alike
+        p.x = x + ORG.fbm(p.sd + clock * 0.55) * 3.4;
+        p.y = y + ORG.fbm(p.sd + 57.3 + clock * 0.48) * 3.4;
+        ORG.remember(p, p.x, p.y, 4);
         for (const sk of SINKS){
           const dd = Math.hypot(p.x - sk.x, p.y - sk.y);
           if (dd > sk.r) continue;
@@ -1677,14 +2146,17 @@ const Body = (() => {
     }
 
     for (const p of insulin){
-      p.s += p.v * f; p.wob += .2 * f;
+      p.s += p.v * f * beat;
       const [x,y] = pointOn(LOOPS[p.loop], p.s);
-      p.x = x + Math.sin(p.wob) * 2.2; p.y = y + Math.cos(p.wob) * 2.2;
+      p.x = x + ORG.fbm(p.sd + clock * 0.7) * 4.2;
+      p.y = y + ORG.fbm(p.sd + 91.4 + clock * 0.62) * 4.2;
+      ORG.remember(p, p.x, p.y, 5);
     }
     for (const p of ketone){
-      p.s += p.v * f;
+      p.s += p.v * f * beat;
       const [x,y] = pointOn(LOOPS[p.loop], p.s);
-      p.x = x; p.y = y;
+      p.x = x + ORG.snoise(p.s * 40 + clock * .4) * 2.0;
+      p.y = y + ORG.snoise(p.s * 40 + 12.1 + clock * .4) * 2.0;
     }
     for (const t of tcells){
       if (!t.arrived){
@@ -1707,7 +2179,24 @@ const Body = (() => {
   }
 
   /* ---- draw ---- */
+  /* The anatomy itself should move. A still heart with beads sliding past it
+     reads as a diagram; a heart that squeezes reads as a body. Scaling only
+     these elements (not the whole figure) keeps the SVG registered with the
+     particle canvas drawn over it. */
+  function animateAnatomy(){
+    if (!heartEl)  heartEl  = document.getElementById('heartShape');
+    if (!vesselEl) vesselEl = document.getElementById('vesselGroup');
+    if (!torsoEl)  torsoEl  = document.getElementById('figure');
+    const c = ORG.cardiac(clock, bpmNow);
+    if (heartEl) heartEl.style.transform = `scale(${(1 + 0.085 * c).toFixed(4)})`;
+    // a pressure wave running down the vessels a beat behind the squeeze
+    if (vesselEl) vesselEl.style.opacity = (0.80 + 0.20 * ORG.cardiac(clock - 0.12, bpmNow)).toFixed(3);
+    // quiet respiratory sway of the whole outline, ~15 breaths/min
+    if (torsoEl) torsoEl.style.transform = `scaleX(${(1 + 0.006 * ORG.breath(clock)).toFixed(4)})`;
+  }
+
   function draw(info){
+    animateAnatomy();
     if (!W) resize();
     cx.clearRect(0, 0, W, H);
     const { gateOpen } = info;
@@ -1721,15 +2210,15 @@ const Body = (() => {
         const w = 13 * k, open = gateOpen;
         cx.save();
         cx.lineWidth = Math.max(1.4, 2.1 * k);
-        cx.strokeStyle = open > .18 ? 'rgba(55,211,153,.95)' : 'rgba(150,167,180,.42)';
-        if (open > .18){ cx.shadowColor = 'rgba(55,211,153,.7)'; cx.shadowBlur = 8 * k; }
+        cx.strokeStyle = open > .18 ? 'rgba(42,214,143,.95)' : 'rgba(150,167,180,.42)';
+        if (open > .18){ cx.shadowColor = 'rgba(42,214,143,.7)'; cx.shadowBlur = 8 * k; }
         const gap = w * .34 * clamp(open * 2.2, 0, 1);
         cx.beginPath();
         cx.moveTo(X - w/2, Y); cx.lineTo(X - gap/2, Y);
         cx.moveTo(X + gap/2, Y); cx.lineTo(X + w/2, Y);
         cx.stroke();
         if (open <= .18){
-          cx.strokeStyle = 'rgba(229,72,77,.75)'; cx.lineWidth = Math.max(1, 1.4 * k);
+          cx.strokeStyle = 'rgba(255,71,87,.75)'; cx.lineWidth = Math.max(1, 1.4 * k);
           cx.beginPath();
           cx.moveTo(X - 3.2*k, Y - 3.2*k); cx.lineTo(X + 3.2*k, Y + 3.2*k);
           cx.moveTo(X + 3.2*k, Y - 3.2*k); cx.lineTo(X - 3.2*k, Y + 3.2*k);
@@ -1743,15 +2232,15 @@ const Body = (() => {
     for (const sk of SINKS){
       if (!sk.glow) continue;
       const g = cx.createRadialGradient(px(sk.x), py(sk.y), 0, px(sk.x), py(sk.y), sk.r * k * 1.5);
-      g.addColorStop(0, `rgba(55,211,153,${.30 * sk.glow})`);
-      g.addColorStop(1, 'rgba(55,211,153,0)');
+      g.addColorStop(0, `rgba(42,214,143,${.30 * sk.glow})`);
+      g.addColorStop(1, 'rgba(42,214,143,0)');
       cx.fillStyle = g;
       cx.beginPath(); cx.arc(px(sk.x), py(sk.y), sk.r * k * 1.5, 0, 7); cx.fill();
     }
 
     /* ketones */
     if (on('metab') && ketone.length){
-      cx.fillStyle = 'rgba(226,96,60,.85)';
+      cx.fillStyle = 'rgba(255,106,69,.72)';
       for (const p of ketone){
         const X = px(p.x), Y = py(p.y), r = 2.1 * k;
         cx.beginPath(); cx.moveTo(X, Y-r); cx.lineTo(X+r, Y); cx.lineTo(X, Y+r); cx.lineTo(X-r, Y);
@@ -1763,13 +2252,19 @@ const Body = (() => {
     if (on('cardio') || on('metab')){
       for (const p of glucose){
         const X = px(p.x), Y = py(p.y);
-        const r = (p.mode === 'flow' ? 2.7 : 2.2 * p.life) * k;
+        const rgb = p.mode === 'spill' ? '53,198,214' : '255,196,110';
+        const r = (p.mode === 'flow' ? 2.6 : 2.2 * p.life) * k * p.sz * p.z;
         if (r <= 0) continue;
-        cx.globalAlpha = p.mode === 'flow' ? .95 : p.life;
-        cx.fillStyle = p.mode === 'spill' ? '#5BC8D6' : '#FFC978';
-        cx.beginPath(); cx.arc(X, Y, r, 0, 7); cx.fill();
-        cx.globalAlpha = p.mode === 'flow' ? .22 : p.life * .2;
-        cx.beginPath(); cx.arc(X, Y, r * 2.3, 0, 7); cx.fill();
+        p.rot += p.spin;
+        if (p.mode === 'flow' && p.h){
+          cx.save();
+          ORG.trail(cx, p.h.map(q => [px(q[0]), py(q[1])]), rgb, r * 1.4, .75 * p.z);
+          cx.restore();
+        }
+        const [ang, st] = ORG.flowShape(p, .07);
+        // deeper particles read softer, as though seen through plasma
+        ORG.cell(cx, X, Y, r, ang, st, rgb,
+                 (p.mode === 'flow' ? .92 : p.life) * (0.48 + 0.52 * p.z));
       }
       cx.globalAlpha = 1;
     }
@@ -1778,10 +2273,14 @@ const Body = (() => {
     if (on('endo')){
       for (const p of insulin){
         const X = px(p.x), Y = py(p.y);
-        cx.fillStyle = 'rgba(168,158,255,.95)';
-        cx.beginPath(); cx.arc(X, Y, 2.1 * k, 0, 7); cx.fill();
-        cx.fillStyle = 'rgba(145,134,236,.22)';
-        cx.beginPath(); cx.arc(X, Y, 5.2 * k, 0, 7); cx.fill();
+        if (p.h){
+          cx.save();
+          ORG.trail(cx, p.h.map(q => [px(q[0]), py(q[1])]), '158,146,255', 2.4 * k, .95);
+          cx.restore();
+        }
+        const [ia, ist] = ORG.flowShape(p, .12);
+        ORG.cell(cx, X, Y, 1.95 * k * p.sz * p.z, ia, ist, '158,146,255',
+                 .95 * (0.5 + 0.5 * p.z));
       }
     }
 
@@ -1790,7 +2289,7 @@ const Body = (() => {
       for (const t of tcells){
         const X = px(t.x), Y = py(t.y), r = 3.4 * k;
         cx.globalAlpha = clamp(t.life, 0, 1);
-        cx.fillStyle = 'rgba(145,134,236,.55)';
+        cx.fillStyle = 'rgba(123,107,245,.55)';
         cx.beginPath(); cx.arc(X, Y, r, 0, 7); cx.fill();
         cx.fillStyle = '#4B3FA8';
         cx.beginPath(); cx.arc(X - r*.2, Y - r*.15, r*.55, 0, 7); cx.fill();
@@ -1817,38 +2316,38 @@ const Body = (() => {
     cx.textAlign = 'center';
 
     if (S.adrenaline > .25){
-      cx.fillStyle = `rgba(110,168,254,${.5 * S.adrenaline})`;
+      cx.fillStyle = `rgba(75,157,255,${.5 * S.adrenaline})`;
       for (let i = 0; i < 6; i++){
         const a = i * 1.1 + cuePhase * .6;
         const X = px(200 + Math.cos(a) * 46), Y = py(70 + Math.sin(a) * 34 + (cuePhase * 8 % 14));
         cx.beginPath(); cx.arc(X, Y, 1.9 * k, 0, 7); cx.fill();
       }
-      cx.fillStyle = 'rgba(110,168,254,.9)';
+      cx.fillStyle = 'rgba(75,157,255,.9)';
       cx.fillText('adrenaline · shaky, sweating', px(200), py(30));
     }
     if (S.G < CONFIG.low && document.getElementById('sys-neuro').dataset.on === '1'){
       const pulse = .35 + .3 * Math.sin(cuePhase * 2);
-      cx.strokeStyle = `rgba(229,72,77,${pulse})`; cx.lineWidth = 2 * k;
+      cx.strokeStyle = `rgba(255,71,87,${pulse})`; cx.lineWidth = 2 * k;
       cx.beginPath(); cx.arc(px(200), py(76), 30 * k, 0, 7); cx.stroke();
-      cx.fillStyle = 'rgba(229,72,77,.95)';
+      cx.fillStyle = 'rgba(255,71,87,.95)';
       cx.fillText('brain running short', px(200), py(122));
     }
     if (S.dka){
       const b = Math.sin(cuePhase * 1.6);
-      cx.strokeStyle = `rgba(226,96,60,${.35 + .25 * b})`; cx.lineWidth = 2 * k;
+      cx.strokeStyle = `rgba(255,106,69,${.35 + .25 * b})`; cx.lineWidth = 2 * k;
       cx.beginPath(); cx.ellipse(px(200), py(240), (44 + b * 5) * k, (36 + b * 4) * k, 0, 0, 7); cx.stroke();
-      cx.fillStyle = 'rgba(226,96,60,.95)';
+      cx.fillStyle = 'rgba(255,106,69,.95)';
       cx.fillText('deep rapid breathing · acetone on the breath', px(200), py(160));
     }
     if (S.G > CONFIG.renalThreshold && document.getElementById('sys-renal').dataset.on === '1'){
-      cx.fillStyle = 'rgba(91,200,214,.9)';
+      cx.fillStyle = 'rgba(53,198,214,.9)';
       cx.fillText('glucose spilling into urine', px(200), py(500));
-      cx.strokeStyle = 'rgba(91,200,214,.5)'; cx.lineWidth = 1.5 * k;
+      cx.strokeStyle = 'rgba(53,198,214,.5)'; cx.lineWidth = 1.5 * k;
       const off = (cuePhase * 10) % 16;
       cx.beginPath(); cx.moveTo(px(200), py(482 + off)); cx.lineTo(px(200), py(490 + off)); cx.stroke();
     }
     if (S.insulitis > .05){
-      cx.fillStyle = `rgba(145,134,236,${.5 + .4 * Math.sin(cuePhase * 2)})`;
+      cx.fillStyle = `rgba(123,107,245,${.5 + .4 * Math.sin(cuePhase * 2)})`;
       cx.beginPath(); cx.arc(px(196), py(333), (8 + 3 * Math.sin(cuePhase * 2)) * k, 0, 7); cx.fill();
     }
   }
@@ -1943,7 +2442,7 @@ const Islet = (() => {
     ctx.restore();
 
     /* capillary through the islet */
-    ctx.strokeStyle = 'rgba(239,110,123,.22)';
+    ctx.strokeStyle = 'rgba(255,92,147,.22)';
     ctx.lineWidth = Math.max(2, scale * .07);
     ctx.beginPath();
     ctx.moveTo(cxp - scale, cyp + scale * .25);
@@ -1951,7 +2450,7 @@ const Islet = (() => {
     ctx.stroke();
 
     /* islet capsule */
-    ctx.strokeStyle = 'rgba(240,138,160,.22)'; ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(255,92,147,.22)'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(cxp, cyp, scale * .95, 0, 7); ctx.stroke();
 
     /* cells */
@@ -1965,37 +2464,54 @@ const Islet = (() => {
         continue;
       }
       let fill, nuc;
-      if (c.type === 'beta'){ fill = 'rgba(240,138,160,'+(0.80 - c.dying*0.55)+')'; nuc = 'rgba(150,60,90,.9)'; }
-      else if (c.type === 'alpha'){ fill = 'rgba(145,134,236,.72)'; nuc = 'rgba(70,58,150,.9)'; }
-      else { fill = 'rgba(79,195,199,.6)'; nuc = 'rgba(30,110,115,.9)'; }
+      if (c.type === 'beta'){ fill = 'rgba(255,92,147,'+(0.80 - c.dying*0.55)+')'; nuc = 'rgba(126,34,66,.9)'; }
+      else if (c.type === 'alpha'){ fill = 'rgba(123,107,245,.72)'; nuc = 'rgba(52,42,132,.9)'; }
+      else { fill = 'rgba(53,214,208,.6)'; nuc = 'rgba(18,96,102,.9)'; }
 
-      if (c.dying > 0){
-        // membrane blebbing: perforin/granzyme apoptosis
-        ctx.save();
-        ctx.globalAlpha = 1 - c.dying * .5;
-        ctx.fillStyle = fill;
-        ctx.beginPath();
-        for (let a = 0; a < 6.28; a += .5){
-          const wob = 1 + Math.sin(a * 3 + phase * 4) * c.dying * .32;
-          const xx = X + Math.cos(a) * r * wob, yy = Y + Math.sin(a) * r * wob;
-          a === 0 ? ctx.moveTo(xx, yy) : ctx.lineTo(xx, yy);
-        }
-        ctx.closePath(); ctx.fill();
-        ctx.restore();
-      } else {
-        ctx.fillStyle = fill;
-        ctx.beginPath(); ctx.arc(X, Y, r, 0, 7); ctx.fill();
+      /* A living cell's membrane is never still: it ripples slowly. A dying
+         one blebs — the outline breaks into irregular lobes as the
+         cytoskeleton lets go. Same routine, different wobble amplitude. */
+      const seed = c.seed || (c.seed = Math.random() * 800);
+      if (c.asp === undefined){
+        c.asp = 0.80 + ORG.vnoise(seed) * 0.42;      // no two silhouettes alike
+        c.rot = ORG.vnoise(seed + 17) * Math.PI;
       }
+      const wob  = 0.11 + c.dying * 0.46;
+      const lob  = c.dying > 0.35 ? 12 : 10;
+      ctx.save();
+      ctx.globalAlpha = 1 - c.dying * .45;
+      ctx.fillStyle = fill;
+      ORG.bodyShape(ctx, X, Y, r, seed, phase * (1 + c.dying * 3), wob, lob,
+                    c.asp, c.rot + Math.sin(phase * .25 + seed) * .06);
+      ctx.fill();
+      // faint membrane edge so cells read as bounded objects under stain
+      ctx.strokeStyle = c.type === 'beta' ? 'rgba(255,196,216,.30)'
+                      : c.type === 'alpha' ? 'rgba(198,190,255,.30)'
+                                           : 'rgba(140,232,228,.30)';
+      ctx.lineWidth = Math.max(0.6, r * 0.06); ctx.stroke();
+      ctx.restore();
+
+      // cytoplasm: secretory granules and organelles, not a flat fill
+      ctx.save();
+      ctx.globalAlpha = (1 - c.dying * .6) * .55;
+      ORG.grain(ctx, X, Y, r, seed, c.type === 'beta' ? 9 : 6,
+                c.type === 'beta' ? '255,200,220' : '210,204,255', .5);
+      ctx.restore();
+
+      // nucleus: elliptical, off-centre, drifting slightly within the cell
       ctx.fillStyle = nuc;
-      ctx.beginPath(); ctx.arc(X - r*.15, Y - r*.12, r * .38, 0, 7); ctx.fill();
+      ORG.bodyShape(ctx, X - r*.16 + ORG.snoise(seed + phase*.3) * r*.06,
+                         Y - r*.13 + ORG.snoise(seed + 40 + phase*.3) * r*.06,
+                    r * .37, seed + 300, phase * .8, .14, 8,
+                    0.86 + ORG.vnoise(seed + 5) * .3, c.rot * 1.4);
+      ctx.fill();
 
       /* granule release when this cell is actually secreting */
       if (c.type === 'beta' && c.dying === 0 && S.betaMass > 0.02 && S.G > 100){
         const g = (Math.sin(phase * 3 + c.ang) + 1) / 2;
-        ctx.fillStyle = `rgba(200,190,255,${g * .55})`;
-        ctx.beginPath();
-        ctx.arc(X + Math.cos(c.ang) * r * (1.3 + g*.6), Y + Math.sin(c.ang) * r * (1.3 + g*.6), r*.18, 0, 7);
-        ctx.fill();
+        const gx = X + Math.cos(c.ang) * r * (1.3 + g*.6) + ORG.snoise(seed+phase)*r*.12;
+        const gy = Y + Math.sin(c.ang) * r * (1.3 + g*.6) + ORG.snoise(seed+9+phase)*r*.12;
+        ORG.dot(ctx, gx, gy, r * .20, '204,194,255', g * .75);
       }
     }
 
@@ -2004,17 +2520,20 @@ const Islet = (() => {
       const X = cxp + Math.cos(t.a) * t.r * scale, Y = cyp + Math.sin(t.a) * t.r * scale;
       const r = t.rr * scale;
       if (Math.hypot(X-cxp, Y-cyp) > R - 2) continue;
-      ctx.fillStyle = 'rgba(120,108,220,.70)';
-      ctx.beginPath(); ctx.arc(X, Y, r, 0, 7); ctx.fill();
+      const ts = t.seed || (t.seed = Math.random() * 700);
+      ctx.fillStyle = 'rgba(106,92,232,.70)';
+      ORG.blob(ctx, X, Y, r, ts, phase * 1.6, .20, 8);   // amoeboid, crawling
+      ctx.fill();
       ctx.fillStyle = 'rgba(40,30,110,.95)';
-      ctx.beginPath(); ctx.arc(X - r*.18, Y, r*.62, 0, 7); ctx.fill();
-      ctx.strokeStyle = 'rgba(145,134,236,.35)'; ctx.lineWidth = 1;
+      ORG.blob(ctx, X - r*.18, Y, r*.62, ts + 200, phase * 1.2, .12, 7);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(123,107,245,.35)'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.arc(X, Y, r * 1.8, 0, 7); ctx.stroke();
     }
 
     /* vignette + field stop */
     const vg = ctx.createRadialGradient(cxp, cyp, R * .55, cxp, cyp, R);
-    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(2,4,6,.92)');
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(4,5,9,.92)');
     ctx.fillStyle = vg; ctx.beginPath(); ctx.arc(cxp, cyp, R, 0, 7); ctx.fill();
 
     if (showLabels){
@@ -2137,14 +2656,24 @@ function frame(now){
     if (S.challenge && S.challenge.active && S.t >= S.challenge.endT) endChallenge();
   }
 
-  const info = Body.update(dtReal);
-  Body.draw(info);
-  Islet.tick();
-  Islet.render(miniCtx, 252, false);
-  if (bigCtx && drawerSection === 'islet') Islet.render(bigCtx, 520, true);
-  if (bigCtx && drawerSection === 'compare') renderCompare();
-  Chart.draw();
-  updateReadouts();
+  /* Only draw what is on screen. On the Learn tab the body, the islet and
+     the chart are all hidden, so rendering them is pure heat. */
+  const onSim = (typeof VIEWS === 'undefined') || VIEWS.current === 'sim';
+  if (onSim){
+    const info = Body.update(dtReal);
+    Body.draw(info);
+    Islet.tick();
+    Islet.render(miniCtx, 252, false);
+    if (bigCtx && drawerSection === 'islet') Islet.render(bigCtx, 520, true);
+    if (bigCtx && drawerSection === 'compare') renderCompare();
+    Chart.draw();
+    updateReadouts();
+  } else {
+    Islet.tick();                                   // keep the islet's own clock
+    if (bigCtx && drawerSection === 'islet') Islet.render(bigCtx, 520, true);
+    if (bigCtx && drawerSection === 'compare') renderCompare();
+    if (typeof LEARN !== 'undefined') LEARN.tick(now);
+  }
   requestAnimationFrame(frame);
 }
 
@@ -2206,10 +2735,21 @@ document.getElementById('aidBtn').onclick = e => {
   toast(S.aid ? 'Closed loop engaged — the pump now doses itself every 5 minutes'
               : 'Closed loop off — you are the pancreas again');
 };
-document.getElementById('playBtn').onclick = e => {
-  S.running = !S.running;
-  e.currentTarget.textContent = S.running ? '⏸ Pause' : '▶ Resume';
-};
+/* Ring the eyepiece so the reader looks at it, without navigating away. */
+function pulseEyepiece(){
+  const e = document.getElementById('eyepiece');
+  if (!e) return;
+  e.classList.remove('calling');
+  void e.offsetWidth;              // restart the animation
+  e.classList.add('calling');
+  setTimeout(() => e.classList.remove('calling'), 4200);
+}
+
+function syncPlayBtn(){
+  const b = document.getElementById('playBtn');
+  if (b) b.textContent = S.running ? '\u23F8 Pause' : '\u25B6 Resume';
+}
+document.getElementById('playBtn').onclick = () => { S.running = !S.running; syncPlayBtn(); };
 document.getElementById('resetBtn').onclick = () => loadScenario('normalday');
 
 /* legend */
@@ -2379,7 +2919,11 @@ const STORY = [
     p:`<p>Open the eyepiece. What you are watching is the actual event of the disease.</p>
        <p>The violet cells with dark centres are immune cells. The pink ones are beta cells. Watch the pink cells go ragged and then disappear — that is a cell being killed.</p>
        <p>Notice that the neighbouring cells are fine. The attack is extraordinarily precise. It wants beta cells, and only beta cells.</p>`,
-    apply(){ S.insulitis = 1.0; S.betaMass = 0.75; Body.spawnTCells(14); openDrawerLater('islet'); } },
+    apply(){ S.insulitis = 1.0; S.betaMass = 0.75; Body.spawnTCells(14);
+             // Draw the eye to the live islet rather than replacing this panel.
+             // Opening the islet drawer here used to overwrite the walkthrough
+             // itself, which removed the Next button and stranded the reader.
+             pulseEyepiece(); } },
 
   { eyebrow:'Stage 1 · markers', title:'Fingerprints in the blood',
     r:`<p>Islet autoantibodies appear as the process runs: <strong>IAA</strong> (often first in young children), <strong>GADA</strong>, <strong>IA-2A</strong>, <strong>ZnT8A</strong>. They are markers of the T-cell process rather than its effectors.</p>
@@ -2874,6 +3418,909 @@ Chart.resize(); Body.resize();
 loadScenario('normalday');
 document.getElementById('doseVal').textContent = doseUnits.toFixed(1) + ' U';
 requestAnimationFrame(t => { lastFrame = t; frame(t); });
+/* ================================================================
+   LEARN — animated pathway diagrams
+
+   These are the "explain the pathology" panels. They are drawn rather
+   than embedded as image files: a canvas loop costs nothing to ship,
+   scales to any screen, respects the language toggle, and can be
+   restyled with the rest of the app. Each diagram is a pure function of
+   (context, size, time), so nothing accumulates state between frames.
+   ================================================================ */
+
+const LEARN = (() => {
+  /* Diagrams sit on the pinned dark instrument ground in both themes, so
+     these are fixed rather than read from CSS. Each accent carries its rgb
+     triplet alongside the hex so a node can be tinted, not merely outlined. */
+  const RGB = {
+    eosin:'255,92,147', hema:'123,107,245', delta:'53,214,208',
+    range:'42,214,143', high:'255,174,31', vhigh:'255,106,69', low:'75,157,255'
+  };
+  const C = {
+    ink:'#EEF1F5', dim:'#9AA4B2', faint:'rgba(154,164,178,.28)',
+    eosin:'#FF5C93', hema:'#7B6BF5', delta:'#35D6D0',
+    gluc:'255,196,110', ins:'158,146,255', ket:'255,106,69',
+    range:'#2AD68F', high:'#FFAE1F', vhigh:'#FF6A45', low:'#4B9DFF'
+  };
+  const rgbOf = hex => {
+    for (const k in RGB) if (C[k] === hex) return RGB[k];
+    return '154,164,178';
+  };
+
+  /* ---------- small drawing vocabulary ---------- */
+  function txt(x, y, t, size, col, align, weight){
+    const g = LEARN._c;
+    g.font = `${weight || 500} ${size}px "IBM Plex Sans", system-ui, sans-serif`;
+    g.fillStyle = col || C.ink; g.textAlign = align || 'center'; g.textBaseline = 'middle';
+    g.fillText(t, x, y);
+  }
+  function mono(x, y, t, size, col, align){
+    const g = LEARN._c;
+    g.font = `500 ${size}px "IBM Plex Mono", monospace`;
+    g.fillStyle = col || C.dim; g.textAlign = align || 'center'; g.textBaseline = 'middle';
+    g.fillText(t, x, y);
+  }
+  function rrect(x, y, w, h, r){
+    const g = LEARN._c;
+    g.beginPath();
+    g.moveTo(x + r, y);
+    g.arcTo(x + w, y, x + w, y + h, r);
+    g.arcTo(x + w, y + h, x, y + h, r);
+    g.arcTo(x, y + h, x, y, r);
+    g.arcTo(x, y, x + w, y, r);
+    g.closePath();
+  }
+  /* a stage box; `lit` fades it in as the animation reaches it */
+  /* No frames. A boxed label needs padding on four sides and a width that
+     fits its longest caption; six of them across a column leaves ~5px
+     between neighbours and the rectangles end up crowding their own text.
+     An accent bar under the label carries the same "lit" information in one
+     dimension instead of four, so the type can breathe and the row stays
+     legible however narrow the column gets. */
+  /* Type that measures itself. The columns reflow from ~480px to ~800px, so
+     a size that fits at the wide end collides at the narrow end. Shrink to a
+     floor, and if the caption still will not fit, drop it rather than let it
+     run into its neighbour. */
+  function fitText(x, y, label, size, col, align, weight, maxw, isMono){
+    const g = LEARN._c, fam = isMono ? '"IBM Plex Mono", monospace'
+                                     : '"IBM Plex Sans", system-ui, sans-serif';
+    let s = size;
+    g.font = `${weight} ${s}px ${fam}`;
+    while (s > 8 && g.measureText(label).width > maxw){
+      s -= 0.5; g.font = `${weight} ${s}px ${fam}`;
+    }
+    if (g.measureText(label).width > maxw) return false;
+    g.fillStyle = col; g.textAlign = align || 'center'; g.textBaseline = 'middle';
+    g.fillText(label, x, y);
+    return true;
+  }
+
+  function node(x, y, w, h, label, col, lit, sub){
+    const g = LEARN._c, rgb = rgbOf(col), maxw = Math.max(34, w - 6);
+    g.save();
+    g.globalAlpha = 0.5 + 0.5 * lit;
+    fitText(x, sub ? y - 7 : y - 2, label, 11.5, lit > 0.5 ? C.ink : C.dim,
+            'center', 600, maxw, false);
+    if (sub) fitText(x, y + 8, sub, 9, C.dim, 'center', 500, maxw, true);
+    g.restore();
+
+    const bw = Math.min(w, 84) * (0.34 + 0.66 * lit);
+    const by = y + (sub ? 20 : 12);
+    g.save();
+    g.strokeStyle = `rgba(${rgb},${(0.20 + 0.70 * lit).toFixed(3)})`;
+    g.lineWidth = 2.2; g.lineCap = 'round';
+    if (lit > 0.6){
+      g.shadowColor = `rgba(${rgb},${((lit - 0.6) * 1.4).toFixed(3)})`;
+      g.shadowBlur = 13;
+    }
+    g.beginPath(); g.moveTo(x - bw/2, by); g.lineTo(x + bw/2, by); g.stroke();
+    g.restore();
+    return by;
+  }
+
+  /* curved arrow with a travelling highlight */
+  function arrow(x1, y1, x2, y2, col, lit, bend){
+    const g = LEARN._c;
+    const mx = (x1 + x2) / 2 + (bend || 0), my = (y1 + y2) / 2;
+    g.save();
+    g.globalAlpha = 0.18 + 0.55 * lit;
+    g.strokeStyle = col; g.lineWidth = 1.4;
+    g.beginPath(); g.moveTo(x1, y1); g.quadraticCurveTo(mx, my, x2, y2); g.stroke();
+    const a = Math.atan2(y2 - my, x2 - mx);
+    g.beginPath();
+    g.moveTo(x2, y2);
+    g.lineTo(x2 - Math.cos(a - 0.42) * 7, y2 - Math.sin(a - 0.42) * 7);
+    g.lineTo(x2 - Math.cos(a + 0.42) * 7, y2 - Math.sin(a + 0.42) * 7);
+    g.closePath(); g.fillStyle = col; g.fill();
+    g.restore();
+  }
+  /* a token riding an arrow, 0..1 along it */
+  function rider(x1, y1, x2, y2, f, rgb, r, bend){
+    if (f < 0 || f > 1) return;
+    const mx = (x1 + x2) / 2 + (bend || 0), my = (y1 + y2) / 2;
+    const u = 1 - f;
+    const x = u*u*x1 + 2*u*f*mx + f*f*x2;
+    const y = u*u*y1 + 2*u*f*my + f*f*y2;
+    ORG.dot(LEARN._c, x, y, r || 3.4, rgb, 0.95);
+    LEARN._c.globalAlpha = 1;
+  }
+  /* saw a value into 0..1 over a window of the loop */
+  const win = (t, a, b) => Math.max(0, Math.min(1, (t - a) / (b - a)));
+  /* repeating 0..1 ramp */
+  const cyc = (t, period, offset) => (((t + (offset || 0)) % period) / period);
+
+  /* ================= diagram 1: how a beta cell secretes ================= */
+  function dSecretion(g, w, h, t){
+    const stages = [
+      ['Glucose in',   'GLUT2 · free'],
+      ['Glycolysis',   'glucokinase'],
+      ['ATP rises',    'ATP/ADP ratio'],
+      ['K⁺ channel',   'K_ATP closes'],
+      ['Depolarises',  'Ca²⁺ enters'],
+      ['Granules fuse','insulin out']
+    ];
+    const n = stages.length, m = 16;
+    const step = (w - m * 2) / n;
+    const xs = Array.from({length:n}, (_, i) => m + step * (i + 0.5));
+    const y = h * 0.40, spineY = y + 20;
+    const p = cyc(t, 7.2);
+
+    // the spine: dim throughout, bright behind the signal that has passed
+    g.save();
+    g.strokeStyle = 'rgba(154,164,178,.16)'; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(xs[0], spineY); g.lineTo(xs[n-1], spineY); g.stroke();
+    g.restore();
+
+    stages.forEach((st, i) => {
+      const at  = i * 0.13;
+      const lit = Math.max(win(p, at, at + 0.10), p > 0.86 ? 0.85 : 0);
+      node(xs[i], y, step - 8, 40, st[0], i < 3 ? C.high : C.eosin, lit, st[1]);
+      if (i < n - 1){
+        const l  = win(p, at + 0.06, at + 0.16);
+        const x1 = xs[i] + step * 0.30, x2 = xs[i+1] - step * 0.30;
+        g.save();
+        g.strokeStyle = `rgba(154,164,178,${(0.14 + 0.34 * l).toFixed(3)})`;
+        g.lineWidth = 1.2;
+        g.beginPath(); g.moveTo(x1, spineY); g.lineTo(x2, spineY); g.stroke();
+        g.restore();
+        if (l > 0 && l < 1)
+          ORG.dot(g, x1 + (x2 - x1) * l, spineY, 3.2, i < 2 ? C.gluc : C.ins, .95);
+      }
+    });
+    g.globalAlpha = 1;
+
+    // insulin leaving the last stage
+    if (p > 0.62){
+      for (let i = 0; i < 7; i++){
+        const f = cyc(t, 2.1, i * 0.3);
+        ORG.dot(g, xs[n-1] + ORG.snoise(i * 9 + t) * 12,
+                spineY + 14 + f * 26, 2.6, C.ins, (1 - f) * 0.8);
+      }
+    }
+    g.globalAlpha = 1;
+    mono(w/2, h - 15, 'the cell counts glucose by how much ATP it makes from it', 10, C.dim);
+  }
+
+  /* ================= diagram 2: insulin opens the door ================= */
+  function dGlut4(g, w, h, t){
+    const memY = h * 0.40, p = cyc(t, 6.4);
+    // membrane as two rippling leaflets
+    g.strokeStyle = 'rgba(147,161,172,.5)'; g.lineWidth = 1.2;
+    for (const off of [-5, 5]){
+      g.beginPath();
+      for (let x = 0; x <= w; x += 6){
+        const yy = memY + off + ORG.snoise(x * 0.02 + t * 0.4) * 1.6;
+        x === 0 ? g.moveTo(x, yy) : g.lineTo(x, yy);
+      }
+      g.stroke();
+    }
+    txt(w - 8, memY - 22, 'outside', 10, C.dim, 'right');
+    txt(w - 8, memY + 24, 'inside the muscle cell', 10, C.dim, 'right');
+
+    // receptor
+    const rx = w * 0.17;
+    g.strokeStyle = C.hema; g.lineWidth = 2.4; g.globalAlpha = 0.9;
+    g.beginPath(); g.moveTo(rx - 7, memY - 16); g.lineTo(rx - 7, memY + 16);
+    g.moveTo(rx + 7, memY - 16); g.lineTo(rx + 7, memY + 16); g.stroke();
+    g.globalAlpha = 1;
+    mono(rx, memY - 28, 'receptor', 9.5, C.hema);
+    // insulin arriving and binding
+    const bind = win(p, 0, 0.16);
+    ORG.dot(g, rx + (1 - bind) * 90, memY - 44 - (1 - bind) * 16, 4.6, C.ins, 0.95);
+    g.globalAlpha = 1;
+
+    // signal cascade
+    const chain = [['IRS-1', 0.18], ['PI3K', 0.28], ['Akt', 0.38]];
+    let px_ = rx;
+    chain.forEach(([lab, at], i) => {
+      const x = rx + 74 + i * 78, lit = win(p, at, at + 0.10);
+      node(x, memY + 52, 60, 30, lab, C.hema, lit);
+      arrow(px_ + (i ? 30 : 6), memY + (i ? 52 : 20), x - 32, memY + 52, C.faint, lit, 0);
+      rider(px_ + (i ? 30 : 6), memY + (i ? 52 : 20), x - 32, memY + 52, lit, C.ins, 2.8);
+      px_ = x;
+    });
+
+    // vesicle travelling to the membrane and opening a channel
+    const vp = win(p, 0.46, 0.72);
+    const vx = px_ + 40 + vp * (w * 0.24), vy = memY + 52 - vp * 52;
+    const docked = win(p, 0.70, 0.78);
+    g.save(); g.globalAlpha = 1 - docked;
+    g.strokeStyle = C.range; g.lineWidth = 1.6;
+    ORG.blob(g, vx, vy, 13, 4.2, t * 1.4, 0.14, 9); g.stroke();
+    mono(vx, vy + 24, 'GLUT4 vesicle', 9, C.dim);
+    g.restore();
+    // the transporter, once docked, with glucose pouring through
+    if (docked > 0.1){
+      const gx = w * 0.78;
+      g.save(); g.globalAlpha = docked;
+      g.strokeStyle = C.range; g.lineWidth = 2.6;
+      g.beginPath(); g.moveTo(gx - 9, memY - 14); g.lineTo(gx - 9, memY + 14);
+      g.moveTo(gx + 9, memY - 14); g.lineTo(gx + 9, memY + 14); g.stroke();
+      mono(gx, memY - 27, 'GLUT4 open', 9.5, C.range);
+      g.restore();
+      for (let i = 0; i < 6; i++){
+        const f = cyc(t, 1.5, i * 0.25);
+        ORG.dot(g, gx + ORG.snoise(i * 7 + t * 0.6) * 5, memY - 34 + f * 68, 3.0, C.gluc, docked * (1 - f * 0.5));
+      }
+    }
+    g.globalAlpha = 1;
+    mono(w/2, h - 12, 'no insulin, no signal, no transporter — the glucose stays outside', 10, C.dim);
+  }
+
+  /* ================= diagram 3: the slow loss ================= */
+  function dPathogenesis(g, w, h, t){
+    const L = 46, R = w - 30, top = h * 0.28, bot = h * 0.62;
+    const p = cyc(t, 11);
+    // axis
+    g.strokeStyle = C.faint; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(L, bot); g.lineTo(R, bot); g.stroke();
+
+    mono(L - 6, top, '100%', 9, C.dim, 'right');
+    mono(L - 6, bot, '0', 9, C.dim, 'right');
+    txt(L - 30, (top + bot) / 2, 'beta', 9.5, C.dim, 'center');
+
+    // beta-mass curve: flat, then a long autoimmune decline, then the floor
+    const massAt = f => f < 0.22 ? 1
+                   : f < 0.72 ? 1 - Math.pow((f - 0.22) / 0.50, 1.7) * 0.86
+                   : 0.14 - (f - 0.72) * 0.18;
+    g.strokeStyle = C.eosin; g.lineWidth = 2.2;
+    g.beginPath();
+    for (let f = 0; f <= 1.0001; f += 0.01){
+      const x = L + (R - L) * f, y = bot - (bot - top) * Math.max(0, massAt(f));
+      f === 0 ? g.moveTo(x, y) : g.lineTo(x, y);
+      if (f > p) break;
+    }
+    g.stroke();
+    // clinical-onset threshold
+    const thY = bot - (bot - top) * 0.20;
+    g.save(); g.setLineDash([4, 4]); g.strokeStyle = 'rgba(226,96,60,.6)'; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(L, thY); g.lineTo(R, thY); g.stroke(); g.restore();
+    mono(R, thY - 9, 'symptoms appear here', 9, C.vhigh, 'right');
+
+    // stage markers
+    /* Six labels along one baseline collide as soon as the column narrows —
+       'trigger' and 'autoantibodies' ran into each other. Alternating rows
+       doubles the room each one has and reads as a timeline besides. */
+    const stages = [
+      [0.06, 'HLA risk'], [0.24, 'trigger'], [0.36, 'autoantibodies'],
+      [0.55, 'insulitis'], [0.78, 'diagnosis'], [0.93, 'honeymoon']
+    ];
+    stages.forEach(([f, lab], i) => {
+      const x = L + (R - L) * f, lit = p > f ? 1 : 0.20;
+      const row = i % 2, ly = bot + 20 + row * 15;
+      g.save(); g.globalAlpha = lit;
+      g.strokeStyle = 'rgba(123,107,245,.55)'; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(x, bot + 2); g.lineTo(x, ly - 8); g.stroke();
+      ORG.dot(g, x, bot - (bot - top) * Math.max(0, massAt(f)), 3.4, '123,107,245', lit);
+      g.globalAlpha = lit;
+      mono(x, ly, lab, 9, lit > 0.5 ? C.ink : C.dim);
+      g.restore();
+    });
+    g.globalAlpha = 1;
+    // T cells drifting in during insulitis
+    if (p > 0.36 && p < 0.86){
+      for (let i = 0; i < 9; i++){
+        const x = L + (R - L) * (0.38 + ORG.vnoise(i * 3.1) * 0.42);
+        const y = top + 12 + ORG.vnoise(i * 7.7) * (bot - top - 24) + ORG.snoise(i + t * 0.5) * 6;
+        g.fillStyle = 'rgba(145,134,236,.5)';
+        ORG.blob(g, x, y, 4.4, i * 40, t * 1.5, 0.24, 8); g.fill();
+      }
+    }
+    mono(w/2, h - 8, 'most of the damage is done before anyone feels anything', 10, C.dim);
+  }
+
+  /* ================= diagram 4: the DKA spiral ================= */
+  function dDka(g, w, h, t){
+    const p = cyc(t, 9);
+    const cxm = w / 2, cy = h * 0.50;
+    const rx = Math.min(w * 0.34, 205), ry = h * 0.29;
+    const steps = [
+      ['No insulin',       C.vhigh, 'signal absent'],
+      ['Fat breaks down',  C.high,  'lipolysis'],
+      ['Free fatty acids', C.high,  'to the liver'],
+      ['Ketones made',     C.high,  'β-oxidation'],
+      ['Blood turns acid', C.vhigh, 'pH falls'],
+      ['Glucose spills',   C.low,   'osmotic diuresis'],
+      ['Dehydration',      C.low,   'volume loss']
+    ];
+    const A = i => -Math.PI / 2 + i / steps.length * Math.PI * 2;
+    const P = a => [cxm + Math.cos(a) * rx, cy + Math.sin(a) * ry];
+
+    /* One closed ring rather than seven arrows between seven rectangles: the
+       shape itself is the argument — this is a loop that feeds back into
+       its own start, which is exactly why it accelerates. */
+    g.save();
+    g.strokeStyle = 'rgba(154,164,178,.14)'; g.lineWidth = 1.2;
+    g.beginPath(); g.ellipse(cxm, cy, rx, ry, 0, 0, Math.PI * 2); g.stroke();
+    g.strokeStyle = 'rgba(255,106,69,.55)'; g.lineWidth = 2;
+    g.beginPath();
+    g.ellipse(cxm, cy, rx, ry, 0, -Math.PI / 2, -Math.PI / 2 + p * Math.PI * 2);
+    g.stroke();
+    g.restore();
+
+    // direction marks around the ring
+    for (let i = 0; i < steps.length; i++){
+      const a = A(i) + Math.PI / steps.length;
+      const [mx, my] = P(a);
+      const tang = Math.atan2(Math.cos(a) * ry, -Math.sin(a) * rx) + Math.PI;
+      g.save();
+      g.globalAlpha = 0.30;
+      g.fillStyle = '#9AA4B2';
+      g.translate(mx, my); g.rotate(tang);
+      g.beginPath(); g.moveTo(4, 0); g.lineTo(-3, 3.2); g.lineTo(-3, -3.2);
+      g.closePath(); g.fill();
+      g.restore();
+    }
+
+    steps.forEach((st, i) => {
+      const [x, y] = P(A(i));
+      const lit = Math.max(win(p, i * 0.115, i * 0.115 + 0.09), p > 0.85 ? 0.8 : 0);
+      node(x, y, 120, 38, st[0], st[1], lit, st[2]);
+    });
+
+    // the token going round
+    const ta = -Math.PI / 2 + p * Math.PI * 2, [tx, ty] = P(ta);
+    ORG.dot(g, tx, ty, 4.2, '255,106,69', .95);
+    g.globalAlpha = 1;
+
+    txt(cxm, cy + 2, 'each step makes the next worse', 10.5, C.dim);
+    mono(w/2, h - 10, 'this is why missed insulin is an emergency, not an inconvenience', 10, C.dim);
+  }
+
+  /* ================= diagram 5: defending against a low ================= */
+  function dCounterReg(g, w, h, t){
+    const p = cyc(t, 8);
+    const L = 54, R = w - 30, base = h * 0.46;
+    // the glucose trace falling then recovering
+    g.strokeStyle = C.low; g.lineWidth = 2.2;
+    g.beginPath();
+    for (let f = 0; f <= 1.0001; f += 0.008){
+      if (f > p) break;
+      const dip = f < 0.42 ? -Math.pow(f / 0.42, 1.6) * 52
+                : f < 0.62 ? -52 + (f - 0.42) / 0.20 * 8
+                : -44 + Math.pow((f - 0.62) / 0.38, 1.2) * 58;
+      const x = L + (R - L) * f, y = base - dip * -1;
+      f === 0 ? g.moveTo(x, y) : g.lineTo(x, y);
+    }
+    g.stroke();
+    g.save(); g.setLineDash([4,4]); g.strokeStyle = 'rgba(110,168,254,.45)'; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(L, base + 40); g.lineTo(R, base + 40); g.stroke(); g.restore();
+    mono(L - 6, base + 40, '70', 9, C.low, 'right');
+    mono(L - 6, base, '110', 9, C.dim, 'right');
+
+    /* Cortisol and growth hormone fire only six percent of the loop apart, so
+       labelling them where they happen puts them on top of each other. The
+       labels are evenly spaced and a leader line runs back to the moment on
+       the trace that each one belongs to. */
+    const responders = [
+      [0.30, 'Glucagon',   'alpha cells wake',   C.hema],
+      [0.40, 'Adrenaline', 'shaky, sweating',    C.low],
+      [0.52, 'Cortisol',   'slower, longer',     C.high],
+      [0.58, 'Growth h.',  'insulin resistance', C.delta]
+    ];
+    const lane = h * 0.79;
+    responders.forEach(([at, lab, sub, col], i) => {
+      const lx  = L + (R - L) * ((i + 0.5) / responders.length);
+      const tx  = L + (R - L) * at;
+      const lit = win(p, at, at + 0.10);
+      g.save();
+      g.globalAlpha = 0.18 + 0.5 * lit;
+      g.strokeStyle = 'rgba(154,164,178,.7)'; g.lineWidth = 1;
+      g.beginPath();
+      g.moveTo(lx, lane - 17);
+      g.quadraticCurveTo(lx, base + 54, tx, base + 44);
+      g.stroke();
+      g.restore();
+      ORG.dot(g, tx, base + 42, 2.8, '123,107,245', 0.25 + 0.7 * lit);
+      node(lx, lane, (R - L) / responders.length - 10, 38, lab, col, lit, sub);
+    });
+    g.globalAlpha = 1;
+    // liver releasing glucose
+    if (p > 0.42){
+      for (let i = 0; i < 8; i++){
+        const f = cyc(t, 1.9, i * 0.24);
+        ORG.dot(g, L + (R - L) * (0.66 + f * 0.28), base - 6 - f * 26 + ORG.snoise(i + t) * 6,
+                3.2, C.gluc, (1 - f) * 0.85);
+      }
+    }
+    g.globalAlpha = 1;
+    txt(w / 2, h * 0.14, 'A body defends a low four different ways', 12, C.ink, 'center', 600);
+    mono(w/2, h - 8, 'in long-standing type 1 the first two of these fade — that is why lows sneak up', 10, C.dim);
+  }
+
+  /* ================= diagram 6: two different diseases ================= */
+  function dTypes(g, w, h, t){
+    const half = w / 2, p = cyc(t, 7);
+    [0, 1].forEach(side => {
+      const cxm = half * (0.5 + side), top = h * 0.24;
+      const isT1 = side === 0;
+      txt(cxm, top - 34, isT1 ? 'Type 1' : 'Type 2', 15, isT1 ? C.eosin : C.high, 'center', 700);
+      mono(cxm, top - 16, isT1 ? 'the factory is destroyed' : 'the locks get stiff', 10, C.dim);
+      // islet
+      const iy = top + 44, ir = Math.min(46, half * 0.16);
+      g.strokeStyle = 'rgba(147,161,172,.3)'; g.lineWidth = 1;
+      ORG.blob(g, cxm, iy, ir, side * 91 + 3, t * 0.5, 0.07, 11); g.stroke();
+      const nCells = 9;
+      for (let i = 0; i < nCells; i++){
+        const a = i / nCells * Math.PI * 2, rr = ir * 0.56;
+        const x = cxm + Math.cos(a) * rr, y = iy + Math.sin(a) * rr;
+        const gone = isT1 ? p > 0.18 + i * 0.055 : false;
+        const tired = !isT1 && p > 0.4 && i % 3 === 0;
+        if (gone){
+          g.save(); g.setLineDash([2,2]); g.strokeStyle = 'rgba(120,132,142,.4)';
+          g.lineWidth = 1; ORG.blob(g, x, y, ir*0.17, i*30, t, 0.1, 8); g.stroke(); g.restore();
+        } else {
+          g.fillStyle = tired ? 'rgba(240,138,160,.35)' : 'rgba(240,138,160,.8)';
+          ORG.blob(g, x, y, ir * 0.19, i * 30 + side * 7, t * 0.9, 0.10, 8); g.fill();
+        }
+      }
+      // attackers on the left, resistance on the right
+      if (isT1 && p > 0.12){
+        for (let i = 0; i < 7; i++){
+          const a = i / 7 * Math.PI * 2 + t * 0.35;
+          const rr = ir * (1.5 - Math.min(0.5, (p - 0.12) * 0.9));
+          g.fillStyle = 'rgba(145,134,236,.65)';
+          ORG.blob(g, cxm + Math.cos(a) * rr, iy + Math.sin(a) * rr, 4.6, i * 51, t * 1.6, 0.24, 8);
+          g.fill();
+        }
+        mono(cxm, iy + ir + 20, 'T cells kill beta cells', 9.5, C.hema);
+      } else if (!isT1){
+        const my = iy + ir + 34;
+        g.strokeStyle = 'rgba(147,161,172,.45)'; g.lineWidth = 1.2;
+        g.beginPath(); g.moveTo(cxm - 60, my); g.lineTo(cxm + 60, my); g.stroke();
+        for (let i = 0; i < 3; i++){
+          const x = cxm - 40 + i * 40;
+          g.strokeStyle = p > 0.4 ? 'rgba(242,166,59,.85)' : 'rgba(55,211,153,.8)';
+          g.lineWidth = 2.2;
+          g.beginPath(); g.moveTo(x - 5, my - 9); g.lineTo(x - 5, my + 9);
+          g.moveTo(x + 5, my - 9); g.lineTo(x + 5, my + 9); g.stroke();
+        }
+        mono(cxm, my + 22, p > 0.4 ? 'transporters respond poorly' : 'transporters working', 9.5,
+             p > 0.4 ? C.high : C.range);
+        for (let i = 0; i < 5; i++){
+          const f = cyc(t, 2.2, i * 0.2);
+          const stuck = p > 0.4;
+          ORG.dot(g, cxm - 40 + i * 20 + ORG.snoise(i + t) * 4,
+                  my - 30 + (stuck ? Math.min(f, 0.42) : f) * 30, 3.0, C.gluc, 0.85);
+        }
+      }
+      if (side === 0){
+        g.strokeStyle = C.faint; g.lineWidth = 1;
+        g.beginPath(); g.moveTo(half, h * 0.12); g.lineTo(half, h * 0.92); g.stroke();
+      }
+    });
+    g.globalAlpha = 1;
+    mono(w/2, h - 8, 'same blood sugar on the meter, two unrelated causes', 10, C.dim);
+  }
+
+  /* ---------- registry ---------- */
+  const DIAGRAMS = [
+    { id:'secretion', h:196, kicker:'Beta cell · seconds', title:'How a beta cell decides to release insulin',
+      r:'Glucose enters the beta cell through GLUT2 (insulin-independent, high-Km, so influx tracks plasma concentration). Glucokinase acts as the glucose sensor; the resulting rise in the ATP/ADP ratio closes K_ATP channels, the membrane depolarises, voltage-dependent Ca²⁺ channels open, and Ca²⁺ influx triggers exocytosis of pre-docked granules — the first phase — followed by recruitment of the reserve pool.',
+      p:'A beta cell tastes sugar by burning it. The more energy it makes, the more it opens up, and the more insulin packets it pushes out. It is a measuring device that answers in seconds.',
+      draw:dSecretion },
+    { id:'glut4', h:262, kicker:'Muscle cell · minutes', title:'How insulin lets glucose into a cell',
+      r:'Insulin binding to its receptor triggers autophosphorylation, IRS-1 recruitment, PI3K activation and Akt phosphorylation, which drives translocation of GLUT4-containing vesicles to the plasma membrane. Uptake in muscle and fat is therefore signal-dependent — contraction can drive the same translocation through an AMPK/Ca²⁺ route, which is why exercise lowers glucose without insulin.',
+      p:'Insulin is the knock at the door. When it lands, the cell brings a glucose doorway up to its surface and sugar can walk in. No knock, no doorway — the sugar stays in the blood no matter how much of it there is.',
+      draw:dGlut4 },
+    { id:'pathogenesis', h:250, kicker:'Islet · years', title:'The slow loss of beta cells',
+      r:'Type 1 develops over months to years: genetic susceptibility (HLA class II being the strongest contributor), an incompletely characterised environmental trigger, seroconversion to islet autoantibodies (GAD65, IA-2, ZnT8, insulin), then progressive T-cell-mediated insulitis. Hyperglycaemia becomes clinically apparent only once roughly 80–90% of functional mass is lost; residual C-peptide during the honeymoon reflects a surviving minority.',
+      p:'This does not happen overnight. The immune system starts removing insulin-making cells long before anyone notices. By the time thirst and weight loss show up, most of the cells are already gone — which is why a diagnosis so often feels sudden when the process was not.',
+      draw:dPathogenesis },
+    { id:'dka', h:286, kicker:'Whole body · hours', title:'Why missing insulin becomes an emergency',
+      r:'Absent insulin, lipolysis is unrestrained: free fatty acids reach the liver and are oxidised to acetoacetate and β-hydroxybutyrate faster than peripheral tissue can use them. Ketoacid accumulation overwhelms buffering and pH falls, while hyperglycaemia above the renal threshold drives an osmotic diuresis with obligate electrolyte and volume loss. Dehydration reduces renal clearance of both glucose and ketones, so each limb accelerates the others.',
+      p:'With no insulin, the body starts burning fat for fuel and the leftovers are acid. At the same time it is losing water fast through the kidneys. Less water means less ability to flush anything out, so it gets worse rather than levelling off. This is the part that puts people in hospital.',
+      draw:dDka },
+    { id:'counterreg', h:262, kicker:'Whole body · minutes', title:'What the body does when glucose falls too far',
+      r:'Counter-regulation is layered and sequential: endogenous insulin secretion falls first, then glucagon and adrenaline mount a rapid hepatic glycogenolytic and gluconeogenic response, with cortisol and growth hormone contributing a slower, longer-acting insulin-resistant state. In established type 1, both the glucagon response and the adrenergic symptom response become blunted — hypoglycaemia-associated autonomic failure — which is the mechanism behind impaired awareness.',
+      p:'A healthy body has four separate defences against a low, and they fire in order. In long-standing type 1 the first two get quieter over time, so the warning signs — shakiness, sweating, a racing heart — arrive later and fainter than they should. That is what makes lows dangerous rather than merely unpleasant.',
+      draw:dCounterReg },
+    { id:'types', h:284, kicker:'Two diseases · one meter', title:'Two different diseases with one shared symptom',
+      r:'Type 1 is autoimmune destruction of beta cells producing absolute insulin deficiency; treatment is replacement. Type 2 is insulin resistance in muscle, liver and adipose tissue with a progressive secretory defect, so hyperglycaemia reflects a mismatch between demand and a declining reserve. They differ in aetiology, tempo, autoantibody status, C-peptide, ketosis-proneness and therapeutic logic.',
+      p:'They share a name and a number on a meter, and almost nothing else. In type 1 the cells that make insulin are gone and it has to be replaced. In type 2 the insulin is there but the body has stopped listening to it properly, and the cells making it slowly wear out. Confusing them is where most of the unfair blame comes from.',
+      draw:dTypes }
+  ];
+
+  /* Faint measured grid and corner ticks. An empty region of a scientific
+     panel should still look like part of an instrument, not like a gap. */
+  function graticule(g, w, h){
+    g.save();
+    g.strokeStyle = 'rgba(154,164,178,.055)';
+    g.lineWidth = 1;
+    for (let x = 28; x < w; x += 28){
+      g.beginPath(); g.moveTo(x + .5, 0); g.lineTo(x + .5, h); g.stroke();
+    }
+    for (let y = 28; y < h; y += 28){
+      g.beginPath(); g.moveTo(0, y + .5); g.lineTo(w, y + .5); g.stroke();
+    }
+    g.strokeStyle = 'rgba(154,164,178,.22)';
+    g.lineWidth = 1.2;
+    const t = 9, m = 7;
+    [[m,m,1,1],[w-m,m,-1,1],[m,h-m,1,-1],[w-m,h-m,-1,-1]].forEach(([x,y,dx,dy]) => {
+      g.beginPath();
+      g.moveTo(x + dx * t, y); g.lineTo(x, y); g.lineTo(x, y + dy * t);
+      g.stroke();
+    });
+    g.restore();
+  }
+  /* pull the corners down so the eye lands in the middle */
+  function vignette(g, w, h){
+    const r = Math.max(w, h) * 0.78;
+    const v = g.createRadialGradient(w/2, h/2, r * 0.42, w/2, h/2, r);
+    v.addColorStop(0, 'rgba(4,5,9,0)');
+    v.addColorStop(1, 'rgba(4,5,9,.55)');
+    g.save(); g.fillStyle = v; g.fillRect(0, 0, w, h); g.restore();
+  }
+
+  let mounted = false, canvases = [], t0 = 0;
+
+  function mount(){
+    const host = document.getElementById('learnGrid');
+    if (!host || mounted) { retext(); return; }
+    host.innerHTML = DIAGRAMS.map(d => `
+      <article class="card diag">
+        <span class="eyebrow">${d.kicker}</span>
+        <h3>${d.title}</h3>
+        <canvas data-d="${d.id}" height="${d.h}"></canvas>
+        <p class="diag-text" data-for="${d.id}"></p>
+      </article>`).join('');
+    canvases = [...host.querySelectorAll('canvas')].map(c => ({
+      el:c, ctx:c.getContext('2d'),
+      def:DIAGRAMS.find(d => d.id === c.dataset.d)
+    }));
+    mounted = true;
+    retext();
+    fit();
+  }
+  function retext(){
+    DIAGRAMS.forEach(d => {
+      const el = document.querySelector(`[data-for="${d.id}"]`);
+      if (el) el.textContent = (typeof mode !== 'undefined' && mode === 'plain') ? d.p : d.r;
+    });
+  }
+  function fit(){
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvases.forEach(c => {
+      const w = c.el.clientWidth || 520;
+      c.el.width = w * dpr; c.el.height = c.def.h * dpr;
+      c.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      c.w = w; c.hh = c.def.h;
+    });
+  }
+  function tick(now){
+    if (!mounted) return;
+    if (!t0) t0 = now;
+    const t = (now - t0) / 1000;
+    for (const c of canvases){
+      if (!c.w) continue;
+      const r = c.el.getBoundingClientRect();
+      if (r.bottom < -80 || r.top > window.innerHeight + 80) continue;  // offscreen: skip
+      LEARN._c = c.ctx;
+      c.ctx.clearRect(0, 0, c.w, c.hh);
+      graticule(c.ctx, c.w, c.hh);
+      try { c.def.draw(c.ctx, c.w, c.hh, t); } catch(e){}
+      c.ctx.globalAlpha = 1;
+      vignette(c.ctx, c.w, c.hh);
+    }
+  }
+  return { mount, tick, fit, retext };
+})();
+
+
+/* ================================================================
+   VIEWS — three places to be, so no single screen has to hold it all
+
+   Learn (why it happens) · Simulate (watch it happen) · Notes
+   The simulation pauses when it is not on screen; running an hour of
+   simulated time while someone reads a diagram would be a nasty
+   surprise on return.
+   ================================================================ */
+const VIEWS = (() => {
+  // starts as null so the first go('learn') is a real transition and mounts
+  let current = null, wasRunning = true;
+
+  function go(name, silent){
+    if (name === current) return;
+    if (current === 'sim') wasRunning = S.running;
+    current = name;
+    ['learn','sim','notes'].forEach(v => {
+      const el = document.getElementById('view-' + v);
+      if (el) el.hidden = (v !== name);
+      const b = document.querySelector(`#tabbar [data-view="${v}"]`);
+      if (b) b.setAttribute('aria-selected', String(v === name));
+    });
+    document.querySelector('.rail').hidden = (name !== 'sim');
+    if (name === 'learn'){ LEARN.mount(); LEARN.fit(); }
+    if (name === 'notes') NOTES.mount();
+    if (name === 'sim'){
+      S.running = wasRunning;
+      syncPlayBtn();
+      Body.resize();
+      Chart.resize();
+    } else {
+      S.running = false;
+      syncPlayBtn();
+    }
+    if (!silent) window.scrollTo({ top:0, behavior:'smooth' });
+  }
+  function init(){
+    document.getElementById('tabbar').addEventListener('click', e => {
+      const b = e.target.closest('[data-view]'); if (b) go(b.dataset.view);
+    });
+    window.addEventListener('resize', () => { if (current === 'learn') LEARN.fit(); });
+    go('learn', true);
+  }
+  return { init, go, get current(){ return current; } };
+})();
+
+
+/* ================================================================
+   NOTES — the myth cards and the sources, out of the main flow
+   ================================================================ */
+const NOTES = (() => {
+  let done = false;
+  function mount(){
+    if (done) { retext(); return; }
+    const m = document.getElementById('notesMyths');
+    if (!m) return;
+    m.innerHTML = MYTHS.map(y => `
+      <article class="card myth">
+        <div class="myth-h">Commonly said</div>
+        <blockquote>${y[0]}</blockquote>
+        <div class="myth-h ok">What is actually true</div>
+        <p class="myth-t">${y[1]}</p>
+      </article>`).join('');
+    done = true;
+  }
+  function retext(){}
+  return { mount, retext };
+})();
+
+
+/* ================================================================
+   TOUR — coach marks
+
+   A spotlight built from four dimming panels around the target's
+   rectangle, plus a tooltip with an arrow. Four panels rather than an
+   SVG mask because it leaves the highlighted element fully visible at
+   native contrast, and it degrades safely if a target is missing.
+   ================================================================ */
+const TOUR = (() => {
+  const STEPS = [
+    { view:'learn', sel:'#tabbar',
+      title:'Three places, not one screen',
+      body:'<b>Learn</b> explains the biology with animated pathways. <b>Simulate</b> is the live model you can push around. <b>Notes</b> holds the myths and the sources.' },
+    { view:'learn', sel:'#learnGrid .diag:first-child',
+      title:'The diagrams are running',
+      body:'Each one animates the actual sequence — glucose arriving, a signal firing, cells dying. Nothing to press; just watch a loop or two.' },
+    { view:'learn', sel:'#modeSeg',
+      title:'Two levels of language',
+      body:'<b>Researcher</b> keeps the real terminology. <b>Everyone</b> says the same thing in plain words. It changes every panel in the app, including these diagrams.' },
+    { view:'sim', sel:'.stage',
+      title:'This is a body, and it is live',
+      body:'Glucose beads move with the pulse. Insulin is violet. Where they meet tissue you will see GLUT4 gates open — or stay shut, if there is no insulin.' },
+    { view:'sim', sel:'#eyepiece',
+      title:'The islet, at 400×',
+      body:'A real view of the cells making insulin. During the walkthrough you can watch beta cells actually die here. Click it to enlarge.' },
+    { view:'sim', sel:'.cgm',
+      title:'The sensor reading',
+      body:'Glucose now, the trend arrow, and how much of the day sat in range. This is the number people with diabetes actually live by.' },
+    { view:'sim', sel:'.chartwrap',
+      title:'The trace',
+      body:'The green band is 70–180 mg/dL — where you want to be. Everything you do on the next panel bends this line within minutes.' },
+    { view:'sim', sel:'#ctrlBasics',
+      title:'Your three main levers',
+      body:'Insulin, food, and movement. Set a dose, give it, and watch the lag — insulin takes about 20 minutes to start and peaks over an hour.' },
+    { view:'sim', sel:'#moreBtn',
+      title:'Everything else is tucked away',
+      body:'Glucagon, the closed loop, and the type 2 medicines live behind here. Open it when you want them; ignore it until then.' },
+    { view:'sim', sel:'.rail',
+      title:'Start with a scenario',
+      body:'Rather than poking at buttons, load a situation — a new diagnosis, a missed dose, a hypo — and see it play out. <b>Be the pancreas</b> turns it into a game.' }
+  ];
+
+  let i = 0, active = false, el = null;
+
+  function build(){
+    if (el) return;
+    el = document.createElement('div');
+    el.id = 'tour';
+    el.innerHTML = `
+      <div class="t-pan" data-p="t"></div><div class="t-pan" data-p="b"></div>
+      <div class="t-pan" data-p="l"></div><div class="t-pan" data-p="r"></div>
+      <div class="t-ring"></div>
+      <div class="t-tip" role="dialog" aria-modal="true" aria-labelledby="tTitle">
+        <div class="t-arrow"></div>
+        <div class="t-num mono"></div>
+        <h4 id="tTitle"></h4>
+        <p></p>
+        <div class="t-act">
+          <button class="btn tiny" data-t="skip">Skip tour</button>
+          <span class="t-dots"></span>
+          <button class="btn tiny" data-t="back">Back</button>
+          <button class="btn" data-t="next">Next</button>
+        </div>
+      </div>`;
+    document.body.appendChild(el);
+    el.addEventListener('click', e => {
+      const b = e.target.closest('[data-t]'); if (!b) return;
+      if (b.dataset.t === 'skip') stop();
+      if (b.dataset.t === 'back') show(i - 1);
+      if (b.dataset.t === 'next') i >= STEPS.length - 1 ? stop() : show(i + 1);
+    });
+    window.addEventListener('keydown', e => {
+      if (!active) return;
+      if (e.key === 'Escape') stop();
+      if (e.key === 'ArrowRight' || e.key === 'Enter'){ e.preventDefault(); i >= STEPS.length-1 ? stop() : show(i+1); }
+      if (e.key === 'ArrowLeft') show(i - 1);
+    });
+    window.addEventListener('resize', () => active && place());
+    window.addEventListener('scroll', () => active && place(), { passive:true });
+  }
+
+  function show(n){
+    n = Math.max(0, Math.min(STEPS.length - 1, n));
+    i = n;
+    const s = STEPS[i];
+    if (s.view) VIEWS.go(s.view, true);
+    const tip = el.querySelector('.t-tip');
+    tip.querySelector('h4').textContent = s.title;
+    tip.querySelector('p').innerHTML = s.body;
+    tip.querySelector('.t-num').textContent = `${i + 1} / ${STEPS.length}`;
+    tip.querySelector('[data-t="back"]').disabled = (i === 0);
+    tip.querySelector('[data-t="next"]').textContent = i === STEPS.length - 1 ? 'Start exploring' : 'Next';
+    tip.querySelector('.t-dots').innerHTML =
+      STEPS.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('');
+    // let the view switch settle, then measure
+    requestAnimationFrame(() => requestAnimationFrame(place));
+  }
+
+  function place(){
+    const s = STEPS[i];
+    const t = document.querySelector(s.sel);
+    const tip = el.querySelector('.t-tip'), ring = el.querySelector('.t-ring');
+    const vw = window.innerWidth, vh = window.innerHeight;
+    if (!t){                                     // target absent: centre it, no spotlight
+      ['t','b','l','r'].forEach(p => Object.assign(el.querySelector(`[data-p="${p}"]`).style,
+        { top:'0', left:'0', width: p==='t' ? vw+'px' : '0', height: p==='t' ? vh+'px' : '0' }));
+      ring.style.opacity = '0';
+      tip.style.left = (vw/2 - tip.offsetWidth/2) + 'px';
+      tip.style.top  = (vh/2 - tip.offsetHeight/2) + 'px';
+      el.querySelector('.t-arrow').style.display = 'none';
+      return;
+    }
+    t.scrollIntoView({ block:'center', behavior:'instant' });
+    const r = t.getBoundingClientRect(), pad = 8;
+    const bx = r.left - pad, by = r.top - pad, bw = r.width + pad*2, bh = r.height + pad*2;
+    const set = (p, o) => Object.assign(el.querySelector(`[data-p="${p}"]`).style, o);
+    set('t', { left:'0px', top:'0px', width:vw+'px', height:Math.max(0,by)+'px' });
+    set('b', { left:'0px', top:(by+bh)+'px', width:vw+'px', height:Math.max(0,vh-by-bh)+'px' });
+    set('l', { left:'0px', top:by+'px', width:Math.max(0,bx)+'px', height:bh+'px' });
+    set('r', { left:(bx+bw)+'px', top:by+'px', width:Math.max(0,vw-bx-bw)+'px', height:bh+'px' });
+    Object.assign(ring.style, { left:bx+'px', top:by+'px', width:bw+'px', height:bh+'px', opacity:'1' });
+
+    // tooltip: below the target if there is room, otherwise above
+    const tw = tip.offsetWidth, th = tip.offsetHeight, gap = 14;
+    const below = (by + bh + gap + th) < vh - 8;
+    let ty = below ? by + bh + gap : by - gap - th;
+    let tx = r.left + r.width/2 - tw/2;
+    tx = Math.max(10, Math.min(vw - tw - 10, tx));
+    ty = Math.max(10, Math.min(vh - th - 10, ty));
+    tip.style.left = tx + 'px'; tip.style.top = ty + 'px';
+    const ar = el.querySelector('.t-arrow');
+    ar.style.display = '';
+    ar.className = 't-arrow ' + (below ? 'up' : 'down');
+    ar.style.left = Math.max(14, Math.min(tw - 26, r.left + r.width/2 - tx - 6)) + 'px';
+  }
+
+  function start(){ build(); active = true; el.classList.add('on'); document.body.classList.add('tour-on'); show(0); }
+  function stop(){
+    active = false;
+    if (el){ el.classList.remove('on'); }
+    document.body.classList.remove('tour-on');
+    const w = document.getElementById('welcome'); if (w) w.remove();
+  }
+
+  /* welcome gate: nothing runs until someone chooses */
+  function gate(){
+    const w = document.createElement('div');
+    w.id = 'welcome';
+    w.innerHTML = `
+      <div class="w-card" role="dialog" aria-modal="true" aria-labelledby="wT">
+        <div class="w-eye"></div>
+        <h2 id="wT">Islet</h2>
+        <p class="w-sub">A working model of what diabetes actually does — and why.</p>
+        <p class="w-body">There is a lot in here: a live body, a sensor trace, a microscope, and a set of
+        animated pathways. The tour points out the five things worth knowing first. It takes under a minute.</p>
+        <div class="w-act">
+          <button class="btn w-go" id="wTour">Show me around</button>
+          <button class="btn" id="wSkip">I'll explore on my own</button>
+        </div>
+        <p class="w-fine">A teaching model, not medical advice. Never use it to make a treatment decision.</p>
+      </div>`;
+    document.body.appendChild(w);
+    S.running = false; syncPlayBtn();
+    document.getElementById('wTour').onclick = () => { w.remove(); start(); };
+    document.getElementById('wSkip').onclick = () => { w.remove(); };
+    document.getElementById('wTour').focus();
+  }
+
+  return { start, stop, gate, get active(){ return active; } };
+})();
+
+
+/* ================================================================
+   THEME — follow the reader by default, let them override
+
+   No storage is used anywhere in this app, so the choice lasts for the
+   session and Auto is the default. Instrument surfaces are pinned dark in
+   CSS, so nothing on a canvas has to be recoloured when this changes.
+   ================================================================ */
+const THEME = (() => {
+  function set(v){
+    if (v === 'auto') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', v);
+    document.querySelectorAll('#themeSeg button').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === v)));
+  }
+  function init(){
+    const seg = document.getElementById('themeSeg');
+    if (seg) seg.addEventListener('click', e => {
+      const b = e.target.closest('[data-theme-set]');
+      if (b) set(b.dataset.themeSet);
+    });
+  }
+  return { init, set };
+})();
+
+/* ---------- wire the reduced controls, then open the gate ---------- */
+(function bootUi(){
+  // "More interventions" disclosure
+  const more = document.getElementById('moreBtn'), adv = document.getElementById('ctrlMore');
+  if (more && adv) more.onclick = () => {
+    const open = adv.hidden;
+    adv.hidden = !open;
+    more.setAttribute('aria-expanded', String(open));
+    more.querySelector('span').textContent = open ? 'Hide' : 'Show';
+  };
+  // secondary meters disclosure
+  const mm = document.getElementById('meterMoreBtn'), mx = document.getElementById('metersMore');
+  if (mm && mx) mm.onclick = () => {
+    const open = mx.hidden;
+    mx.hidden = !open;
+    mm.setAttribute('aria-expanded', String(open));
+    mm.textContent = open ? 'Fewer readings' : 'More readings';
+  };
+  // language toggle must also retext the new panels
+  const seg = document.getElementById('modeSeg');
+  if (seg) seg.addEventListener('click', () => setTimeout(() => { LEARN.retext(); NOTES.retext(); }, 0));
+  const tb = document.getElementById('tourBtn');
+  if (tb) tb.onclick = () => TOUR.start();
+
+  THEME.init();
+  VIEWS.init();
+  TOUR.gate();
+})();
 
 </script>
 </body>
